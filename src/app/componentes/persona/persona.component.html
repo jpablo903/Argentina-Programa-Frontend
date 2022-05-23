@@ -1,0 +1,81 @@
+<div id="acercaDePersona" *ngFor="let persona of personas, let i = index">
+    <!-- Banner -->
+    <div >
+        <img id="banner" src="../../../assets/peakpx.jpg">
+    </div>
+        <div class="row"  id="acercaDe" >
+            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                <img src="../../../assets/perfil.jpg" id="fotoperfil">
+            </div>
+                <!-- Nombre y Profesion -->
+                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2" id="descripcion"  >
+                    <div>
+                        <h3 id="nombreId">{{persona.nombre}} {{persona.apellido}}</h3>
+                    </div>
+                    <div>
+                        <p><b><i>{{persona.profesion}}</i></b></p>
+                    </div>
+                </div>
+                <!-- Acerca De -->
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 acercaDe">
+                    <div id="textAcercaDe"  >
+                        <h3><b>Acerca de mi</b></h3>
+                        <div *ngIf="isAdmin">
+                            <!-- Boton de Editar -->
+                                <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#acercaDeForm"
+                                (click)="editarPersona(i)"><i class="fa-solid fa-pencil"></i></button>
+                                <!-- Boton de Eliminar -->
+                                <button type="button" class="btn btn-danger but"
+                                (click)="eliminarPersona(i)"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <span>
+                        <!-- Texto de Descripcion Acerca De -->
+                        <p id="text-acercade">{{persona.acercaDe}}</p>
+                    </span>
+                </div>
+         </div>
+</div>
+
+    <!-- Modal  Agregar - Editar -->
+<div class="modal fade" id="acercaDeForm" tabindex="-1" aria-labelledby="addExperienciaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addExpLabel">Acerca De</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+    
+          <form novalidate #f="ngForm" [formGroup]="acercaDeForm" (ngSubmit)="nuevaPersonas(acercaDeForm.value.id)">
+            <input type="hidden" formControlName="id" name="id">
+            <div class="form-group">
+              <label for="text">Nombre</label>
+              <input type="text" name="nombre" formControlName="nombre" class="form-control" id="nombre"
+              placeholder="Nombre">
+              <label for="text">Apellido</label>
+              <input type="text" name="apellido" formControlName="apellido" class="form-control" id="apellido"
+              placeholder="Apellido">
+              <label for="text">Profesion</label>
+              <input type="text" name="profesion" formControlName="profesion" class="form-control" id="profesion"
+              placeholder="Profesion">
+              <label for="text">Acerca De</label>
+              <input type="text" name="acercaDe" formControlName="acercaDe" class="form-control" id="acercaDe" placeholder="Lugar de trabajo">
+              <label for="text">Foto Perfil</label>
+              <input type="file" name="urlImagen" formControlName="urlImagen" class="form-control form-control-sm" id="urlImagen">
+              <label for="text">Foto Portada</label>
+              <input type="file" name="urlImagenBanner" formControlName="urlImagenBanner" class="form-control form-control-sm" id="urlImagenBanner">
+            </div>
+            <div class="modal-footer justify-content-md-center">
+              <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
+                Guardar
+              </button>
+              <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

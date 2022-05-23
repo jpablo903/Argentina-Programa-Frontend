@@ -1,0 +1,77 @@
+<div class="row" id="educacion" *ngIf="isLogged">
+    <div id="tituloGeneral">
+        <h2>Educacion</h2>
+        <div *ngIf="isAdmin">
+             <!-- Boton de Agregar -->
+             <button type="button" class="btn btn-primary but"
+            data-bs-toggle="modal" data-bs-target="#estudioForm" (click)="onNewEstudio()">
+            <i class="fa-solid fa-plus"></i></button>
+        </div>
+    </div>
+
+    <div class="col-lg-11" id="educacionTexto"  *ngFor="let estudios of estudio, let i = index">
+        <ul>
+            <li id="tituloEstudio">
+                <div>
+                    <h3>{{estudios.tituloEstudios}}</h3><br> <h6>{{estudios.fechaInicio}} - {{estudios.fechaFin}}</h6> 
+                </div>
+                <div *ngIf="isAdmin"> 
+                    <!-- Boton de Editar -->
+                    <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#estudioForm"
+                      (click)="editarEstudio(i)"><i class="fa-solid fa-pencil"></i></button>
+                    <!-- Boton de Eliminar -->
+                    <button type="button" class="btn btn-danger but"
+                     (click)="eliminarEstudio(i)"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </li>
+        </ul>
+        <p>{{estudios.descripcion}}</p>
+    </div> 
+</div>
+
+  <!-- Modal  Agregar - Editar -->
+  <div class="modal fade" id="estudioForm" tabindex="-1" aria-labelledby="addEstudioLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addEstLabel">Estudio</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+  
+          <form novalidate #f="ngForm" [formGroup]="estudioForm" (ngSubmit)="nuevoEstudio(estudioForm.value.id)">
+            <input type="hidden" formControlName="id" name="id">
+  
+            <div class="form-group">
+                <label for="text">Titulo Estudio</label>
+              <input type="text" name="tituloEstudios" formControlName="tituloEstudios" class="form-control" id="tituloEstudios"
+                placeholder="Titulo de Estudio">
+                <label for="text">Institucion</label>
+              <input type="text" name="institucionEstudio" formControlName="institucionEstudio" class="form-control" id="institucionEstudio"
+              placeholder="Institucion de Estudio">
+              <label for="text">Fecha Inicio</label>
+              <input type="date" name="fechaInicio" formControlName="fechaInicio" class="form-control" id="fechaInicio"
+              placeholder="Fecha de Inicio">
+              <label for="text">Fecha fin</label>
+              <input type="date" name="fechaFin" formControlName="fechaFin" class="form-control" id="fechaFin"
+              placeholder="Fecha de finalizacion">
+              <label for="text">Url Logo</label>
+              <input type="file" name="urlLogo" formControlName="urlLogo" class="form-control form-control-sm" id="urlLogo">
+              <label for="text">Descripcion</label>
+              <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion"
+              placeholder="Descripcion del estudio">
+            </div>
+            <div class="modal-footer justify-content-md-center">
+              <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
+                Guardar
+              </button>
+              <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

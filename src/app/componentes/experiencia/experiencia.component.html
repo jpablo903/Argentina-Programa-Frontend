@@ -1,0 +1,80 @@
+<div class="row" id="experiencia" *ngIf="isLogged">
+    <div id="tituloGeneral">
+        <h2>Experiencia Laboral</h2>
+        <div *ngIf="isAdmin">
+             <!-- Boton de Agregar -->
+             <button type="button" class="btn btn-primary but"
+             data-bs-toggle="modal" data-bs-target="#experienciaForm" (click)="onNewExp()">
+             <i class="fa-solid fa-plus"></i></button>
+        </div>
+    </div>
+    
+    <div class="col-lg-11" *ngFor="let experiencia of experiencia, let i = index">
+        <ul>
+            <li id="tituloExperiencia">
+                <div>
+                    <h3>{{experiencia.puesto}}</h3> - <h4>{{experiencia.nombreCompania}}</h4><br>
+                    <h6>{{experiencia.fechaInicio}} - {{experiencia.fechaFin}} </h6>
+                </div>
+               <div *ngIf="isAdmin">
+                   <!-- Boton de Editar -->
+                    <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#experienciaForm"
+                    (click)="editarExperiencia(i)"><i class="fa-solid fa-pencil"></i></button>
+                    <!-- Boton de Eliminar -->
+                    <button type="button" class="btn btn-danger but"
+                    (click)="eliminarExperiencia(i)"><i class="fa-solid fa-trash-can"></i></button>
+               </div>
+            </li>
+        </ul>
+        <p>{{experiencia.descripcion}}</p>
+    </div>
+</div>
+
+<!-- Modal  Agregar - Editar -->
+<div class="modal fade" id="experienciaForm" tabindex="-1" aria-labelledby="addExperienciaLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addExpLabel">Experiencia</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+    
+          <form novalidate #f="ngForm" [formGroup]="experienciaForm" (ngSubmit)="nuevoExperiencia(experienciaForm.value.id)">
+            <input type="hidden" formControlName="id" name="id">
+            <div class="form-group">
+                <label for="text">Puesto Laboral</label>
+              <input type="text" name="puesto" formControlName="puesto" class="form-control" id="puesto"
+                placeholder="Puesto Laboral">
+                <label for="text">Compania</label>
+              <input type="text" name="nombreCompania" formControlName="nombreCompania" class="form-control" id="institucionEstudio"
+              placeholder="Nombre de compania">
+              <label for="text">Url Logo</label>
+              <input type="file" name="imgUrl" formControlName="imgUrl" class="form-control form-control-sm" id="imgUrl">
+              <label for="text">Lugar</label>
+              <input type="text" name="lugar" formControlName="lugar" class="form-control" id="lugar" placeholder="Lugar de trabajo">
+              <label for="text">Fecha Inicio</label>
+              <input type="date" name="fechaInicio" formControlName="fechaInicio" class="form-control" id="fechaInicio"
+              placeholder="Fecha de Inicio">
+              <label for="text">Fecha fin</label>
+              <input type="date" name="fechaFin" formControlName="fechaFin" class="form-control" id="fechaFin"
+              placeholder="Fecha de finalizacion">
+              <label for="text">Descripcion</label>
+              <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion"
+              placeholder="Descripcion del estudio">
+            </div>
+            <div class="modal-footer justify-content-md-center">
+              <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
+                Guardar
+              </button>
+              <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+

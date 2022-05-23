@@ -1,0 +1,80 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.redes{
+    margin-right: 0.5em;
+    display: flex;
+}
+.modalBoton{
+    width: -webkit-fill-available;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+.modal-footer{
+    justify-content: center;
+}
+.btn{
+    margin-right: 5px;
+    border-width: 2px;
+}.alert{
+    margin: 0px 35px 25px 35px;
+}
+p{
+    margin-left: 20%;
+    font-size: 18px;
+}
+img{
+    width: 40px;
+    padding-right: 5px;
+}
+
+#logo {
+    width: 180px;
+    margin-bottom: -20px;
+}
+
+#nav{
+    background: #5DADE2;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+@media (max-width: 575px){
+    .container{
+        flex-direction: column;
+    }
+    .redes{
+        display: flex;
+        padding-bottom: 5px;
+    }
+    .info{
+        top: 50%;
+        position: absolute;
+        /* text-align: center; */
+        left: 10%;
+    }
+    
+}
+
+/* codigo de presentacion */
+#presentacion{
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    justify-content: center;
+    margin-top: 20px;
+}
+#ologger{
+    text-align: center;
+}
+.info{
+    top: 85%;
+    position: absolute;
+    text-align: center;
+    left: 35%;
+}
+
+h1{
+    justify-content: center;
+    text-align: center;
+    /* width: 100%; */
+    margin: 0px 25px 0px 25px;
+}

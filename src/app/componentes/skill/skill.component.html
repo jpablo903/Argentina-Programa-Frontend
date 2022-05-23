@@ -1,0 +1,74 @@
+<section class="row" *ngIf="isLogged">
+    <div id="tituloG">
+        <h2 id="titulo">Hard & Soft Skills</h2>
+        <div id="buttonn" *ngIf="isAdmin">
+            <button type="button" class="btn btn-primary but"
+            data-bs-toggle="modal" data-bs-target="#skillModal" (click)="onNewSkill()">
+            <i class="fa-solid fa-plus"></i></button>
+        </div>
+    </div>
+    
+        <article id="Skill" *ngFor="let skill of skills, let i = index">
+            <div class="text-center" >
+                <circle-progress
+                    [percent]="skill.porcentaje"
+                    [radius]="100"
+                    [subtitle]= "skill.nombre"
+                    [subtitleColor]="'#5D6D7E'"
+                    [subtitleFontSize]="'20'"
+                    [outerStrokeWidth]="10"
+                    [innerStrokeWidth]="8"
+                    [outerStrokeColor]="'#52BE80'"
+                    [innerStrokeColor]="'#5DADE2'"
+                    [animation]="true"
+                    [animationDuration]="300"
+                ><p></p></circle-progress>
+                <div id="buttones" *ngIf="isAdmin">
+                    <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#skillModal"
+                    (click)="editarSkill(i)"><i class="fa-solid fa-pencil"></i></button>
+                    <!-- Boton de Eliminar -->
+                    <button type="button" class="btn btn-danger but"
+                    (click)="eliminarSkill(i)"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+             </div>
+        </article>
+   
+</section>
+
+    <!-- Modal  Agregar - Editar -->
+    <div class="modal fade" id="skillModal" tabindex="-1" aria-labelledby="addSkillLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addExpLabel">--Skill--</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+        
+              <form novalidate #f="ngForm" [formGroup]="skillForm" (ngSubmit)="nuevoSkill(skillForm.value.id)">
+                <input type="hidden" formControlName="id" name="id">
+                <div class="form-group">
+                  <label for="text">Nombre</label>
+                  <input type="text" name="nombre" formControlName="nombre" class="form-control" id="nombre"
+                  placeholder="Nombre Skill">
+                  <label for="text">Porcentaje</label>
+                  <input type="text" name="porcentaje" formControlName="porcentaje" class="form-control" id="porcentaje"
+                  placeholder="Porcentaje del Skill">
+                  <label for="text">Url Imagen</label>
+                  <input type="file" name="urlImagen" formControlName="urlImagen" class="form-control form-control-sm"id="urlImagen"
+                  placeholder="url de la imagen">
+                </div>
+
+                <div class="modal-footer justify-content-md-center">
+                  <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
+                    Guardar
+                  </button>
+                  <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                    Cerrar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>

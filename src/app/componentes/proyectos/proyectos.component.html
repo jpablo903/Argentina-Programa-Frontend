@@ -1,0 +1,70 @@
+<div class="row" *ngIf="isLogged">
+    <div id="titulo">
+        <h2>Proyectos Realizados</h2>
+        <div *ngIf="isAdmin">
+            <button type="button" class="btn btn-primary but"
+            data-bs-toggle="modal" data-bs-target="#proyectoModal" (click)="onNewProyecto()">
+            <i class="fa-solid fa-plus"></i></button>
+        </div>
+    </div>
+    
+    <div class="container" *ngFor="let proyecto of proyectos, let i = index">
+        <div class="col-sm-12 col-md-7 col-lg-7 parte1">
+            <h4>{{proyecto.nombreProyecto}}</h4>
+            
+            <div id="buttones" *ngIf="isAdmin">
+                <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#proyectoModal"
+                (click)="editarProyecto(i)"><i class="fa-solid fa-pencil"></i></button>
+                <!-- Boton de Eliminar -->
+                <button type="button" class="btn btn-danger but"
+                (click)="eliminarProyecto(i)"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
+        </div>
+        <div id="contenido">
+            <p>{{proyecto.descripcion}}</p>
+            <div class="col-sm-12 col-md-3 col-lg-3 offset-md-1 offset-lg-1 parte2">
+                <img src="../../../assets/proyecto-uno.png" class="img-fluid img-proyecto">
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- Modal  Agregar - Editar -->
+ <div class="modal fade" id="proyectoModal" tabindex="-1" aria-labelledby="addProyectoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addExpLabel">--Proyecto--</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+    
+          <form novalidate #f="ngForm" [formGroup]="proyectoForm" (ngSubmit)="nuevoProyecto(proyectoForm.value.id)">
+            <input type="hidden" formControlName="id" name="id">
+            <div class="form-group">
+              <label for="text">Nombre</label>
+              <input type="text" name="nombreProyecto" formControlName="nombreProyecto" class="form-control" id="nombreProyecto"
+              placeholder="Nombre Proyecto">
+              <label for="text">descripcion</label>
+              <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion"
+              placeholder="Breve descripcion">
+              <label for="text">Url Imagen</label>
+              <input type="file" name="urlImagen" formControlName="urlImagen" class="form-control form-control-sm"id="urlImagen"
+              placeholder="url de la imagen">
+              <label for="text">Url Proyecto</label>
+              <input type="file" name="urlProyecto" formControlName="urlProyecto" class="form-control form-control-sm"id="urlProyecto"
+              placeholder="url del proyecto">
+            </div>
+            <div class="modal-footer justify-content-md-center">
+              <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
+                Guardar
+              </button>
+              <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
+                Cerrar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
