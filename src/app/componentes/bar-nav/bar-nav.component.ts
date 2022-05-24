@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { LoginUsuario } from 'src/app/models/login-usuario';
+import { NuevoUsuario } from 'src/app/models/nuevo-usuario';
 import { AuthService } from 'src/app/servicios/auth.service';
 import { TokenService } from 'src/app/servicios/token.service';
 
@@ -11,7 +13,13 @@ import { TokenService } from 'src/app/servicios/token.service';
   styleUrls: ['./bar-nav.component.css']
 })
 export class BarNavComponent implements OnInit {
-
+      public nuevo: NuevoUsuario[] = [];
+      registerForm: FormGroup;
+  
+      nuevoUsuario!: NuevoUsuario;
+      nombre!: string;
+      email!: string;
+     
       isLogged = false;
       isLoginFail = false;
       loginUsuario!: LoginUsuario;
@@ -22,11 +30,19 @@ export class BarNavComponent implements OnInit {
 
   constructor(
     private tokenService: TokenService,
+    private formBuilder: FormBuilder,
     private authService: AuthService,
     private toastr: ToastrService,
-    private router: Router) { }
+    private router: Router) { 
+      this.registerForm = this.formBuilder.group({
+        nombre:['', Validators.required],
+        nombreUsuario:['', Validators.required],
+        email:['', Validators.required],
+        password:['', Validators.required]
+      })
+    }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if(this.tokenService.getToken()){
       this.isLogged = true;
     }else {
@@ -42,7 +58,18 @@ export class BarNavComponent implements OnInit {
   }
 
       // Aqui va el codigo para resetear el formulario de registro
-      
+      private borrarForm() {
+        this.registerForm.setValue({
+          nombre:'',
+          nombreUsuario:'',
+          email:'',
+          password:''
+        });
+      }
+
+      onNewRegistro(){
+        this.borrarForm();
+      }
       
       
       
@@ -56,7 +83,7 @@ export class BarNavComponent implements OnInit {
     onLogin(): void {
       this.loginUsuario = new LoginUsuario(this.nombreUsuario, this.password);
       this.authService.login(this.loginUsuario).subscribe({
-        next: (data) => {
+       next: (data) => {
           this.isLogged = true;
           this.isLoginFail = false;
   
@@ -74,16 +101,34 @@ export class BarNavComponent implements OnInit {
 
           this.isLogged = false;
           this.isLoginFail = true;
-          this.errorMessage = err.error.error;
+          this.errorMessage;
+          this.toastr.error(this.errorMessage, 'Error de Usuario o Contraseña', {
+            timeOut: 3000,  positionClass: 'toast-top-center',
+          });
+          console.log(this.errorMessage + " Error de usuario o contraseña.");
+        }
+    })
+    }
+
+    onRegister(): void {
+      this.nuevoUsuario = new NuevoUsuario(this.nombre, this.nombreUsuario, this.email, this.password);
+      this.authService.nuevo(this.nuevoUsuario).subscribe({
+        next: (data) => {
+          this.toastr.success('Cuenta Creada', 'OK', {
+            timeOut: 3000, positionClass: 'toast-top-center'
+          });
+  
+          this.router.navigate(['/']);
+          window.location.reload();
+        },
+        error: (err) => {
+          this.errorMessage= err.error.mensaje;
           this.toastr.error(this.errorMessage, 'Fail', {
             timeOut: 3000,  positionClass: 'toast-top-center',
           });
-          console.log(err.error.error);
-          
-  
+          console.log(err.error.message + " ERROR!");
         }
-      })
+    });
     }
+
   }
-
-

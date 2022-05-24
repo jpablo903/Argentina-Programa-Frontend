@@ -83,7 +83,7 @@ export class PersonaComponent implements OnInit {
     if(this.acercaDeForm.get('id')?.value == ''){
       this.personaService.save(personas).subscribe(
         (newPersonas: Persona) =>{
-          this.toastr.success('Experiencia Agregada', 'FELICITACIONES', {
+          this.toastr.success('Datos Agregados', 'FELICITACIONES', {
             timeOut: 3000, positionClass: 'toast-top-center'});
           this.personas.push(newPersonas);
           this.reloadData();
@@ -92,7 +92,7 @@ export class PersonaComponent implements OnInit {
     }else{
       this.personaService.actualizar(id, personas).subscribe(
         ()=>{
-          this.toastr.success('Experiencia Actualizada', 'OK', {
+          this.toastr.success('Datos Actualizados', 'OK', {
             timeOut: 3000, positionClass: 'toast-top-center'
           });
           this.reloadData();

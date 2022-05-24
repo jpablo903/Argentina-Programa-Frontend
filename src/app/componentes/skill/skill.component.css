@@ -1,6 +1,7 @@
 .row{
     border: solid 1px beige;
-    background: #B3B6B7 ;
+    /* background: #B3B6B7 ; */
+    background-image: linear-gradient( 79.8deg,  rgba(101,132,154,1) 3.2%, rgba(160,197,201,1) 89.1% );
     padding: 20px;
     margin: 20px;
     border-radius: 10px;
@@ -38,18 +39,24 @@ h2{
 #contenido{
     justify-content: space-between;
 }
-
+#Skill{
+    margin-left: 15px;
+}
 article{
     float: left;
     width: auto;
 }
+.scroll{
+    height: 250px;
+    width: 1024px;
+    overflow: auto;
+    border: 1px solid #666;
+    border-radius: 20px;
+    padding: 8px;
+}    
 /*  */
-/* @media (max-width: 576px) { */
-    /* #Skill{ */
-        /* height: 50%; */
-	    /* width: 80%; */
-	    /* overflow: auto; */
-	    /* border: 1px solid #666; */
-	    /* padding: 8px; */
-    /* }     */
-  /* } */
+@media (max-width: 576px) {
+    #Skill{
+        margin-left: 15%;
+    }    
+  }

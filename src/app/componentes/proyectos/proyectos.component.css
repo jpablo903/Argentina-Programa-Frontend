@@ -1,5 +1,6 @@
 .row{
-    background: #5DADE2;
+    /* background: #5DADE2; */
+    background-image: radial-gradient( circle farthest-corner at 92.3% 71.5%,  rgba(83,138,214,1) 0%, rgba(134,231,214,1) 90% );
     padding: 20px;
     margin: 20px;
     border-radius: 20px;
@@ -17,6 +18,15 @@
     margin-top: 5px;
     margin-right: 5px;
     font-size: 0.75rem;
+}
+p{
+    margin-left: 4%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+h4{
+    margin-left: 2rem;
+    margin-top: 1rem;
 }
 #titulo{
     display: flex;

@@ -1,11 +1,13 @@
 <div id="acercaDePersona" *ngFor="let persona of personas, let i = index">
     <!-- Banner -->
     <div >
-        <img id="banner" src="../../../assets/peakpx.jpg">
+        <img id="banner" [src]="persona.urlImagenBanner">
+        <!-- <img id="banner" src="../../../assets/peakpx.jpg"> -->
     </div>
         <div class="row"  id="acercaDe" >
             <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                <img src="../../../assets/perfil.jpg" id="fotoperfil">
+                <img [src]="persona.urlImagen" id="fotoperfil">
+                <!-- <img src="../../../assets/perfil.jpg" id="fotoperfil"> -->
             </div>
                 <!-- Nombre y Profesion -->
                 <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2" id="descripcion"  >
@@ -22,11 +24,11 @@
                         <h3><b>Acerca de mi</b></h3>
                         <div *ngIf="isAdmin">
                             <!-- Boton de Editar -->
-                                <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#acercaDeForm"
+                                <button type="button" class="btn btn-outline-warning but" data-bs-toggle="modal" data-bs-target="#acercaDeForm"
                                 (click)="editarPersona(i)"><i class="fa-solid fa-pencil"></i></button>
                                 <!-- Boton de Eliminar -->
-                                <button type="button" class="btn btn-danger but"
-                                (click)="eliminarPersona(i)"><i class="fa-solid fa-trash-can"></i></button>
+                                <button type="button" class="btn btn-outline-danger but"
+                                (click)="eliminarPersona(i)" disabled><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                     <span>
@@ -60,11 +62,13 @@
               <input type="text" name="profesion" formControlName="profesion" class="form-control" id="profesion"
               placeholder="Profesion">
               <label for="text">Acerca De</label>
-              <input type="text" name="acercaDe" formControlName="acercaDe" class="form-control" id="acercaDe" placeholder="Lugar de trabajo">
+              <textarea name="acercaDe" maxlength="255" rows="5" cols="60" placeholder="Breve descripcion" formControlName="acercaDe"
+              class="form-control" id="acercaDe"></textarea>
+              <!-- <input type="text" name="acercaDe" formControlName="acercaDe" class="form-control" id="acercaDe" placeholder="Lugar de trabajo"> -->
               <label for="text">Foto Perfil</label>
-              <input type="file" name="urlImagen" formControlName="urlImagen" class="form-control form-control-sm" id="urlImagen">
+              <input type="text" name="urlImagen" formControlName="urlImagen" class="form-control form-control-sm" id="urlImagen">
               <label for="text">Foto Portada</label>
-              <input type="file" name="urlImagenBanner" formControlName="urlImagenBanner" class="form-control form-control-sm" id="urlImagenBanner">
+              <input type="text" name="urlImagenBanner" formControlName="urlImagenBanner" class="form-control form-control-sm" id="urlImagenBanner">
             </div>
             <div class="modal-footer justify-content-md-center">
               <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">

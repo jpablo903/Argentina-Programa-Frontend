@@ -11,6 +11,7 @@ import { NuevoUsuario } from '../models/nuevo-usuario';
 export class AuthService {
 
   authURL = 'https://backargentinaprograma.herokuapp.com/auth/';
+  // authURL = 'https://localhost:8080/auth/';
 
   constructor(private httpClient: HttpClient) { }
 

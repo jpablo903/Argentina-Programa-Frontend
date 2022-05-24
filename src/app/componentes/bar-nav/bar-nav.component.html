@@ -5,11 +5,11 @@
           <p><strong><i>#YoProgramo</i></strong></p>
       </div>
       <div class="redes">
-           <a href=""><img src="../../../assets/facebook-brands.svg" alt=""></a>
+           <a href="https://web.facebook.com/juanpa.r.904/"><img src="../../../assets/facebook-brands.svg" alt=""></a>
            <a href=""><img src="../../../assets/instagram-square-brands.svg" alt=""></a>
-           <a href=""><img src="../../../assets/twitter-brands.svg" alt=""></a>
-           <a href=""><img src="../../../assets/git-alt-brands.svg" alt=""></a>
-           <a href=""><img src="../../../assets/linkedin-brands.svg" alt=""></a>
+           <a href="https://twitter.com/JuanPab57989868"><img src="../../../assets/twitter-brands.svg" alt=""></a>
+           <a href="https://github.com/jpablo903"><img src="../../../assets/git-alt-brands.svg" alt=""></a>
+           <a href="https://www.linkedin.com/in/juan-pablo-rajoy-93406a11b/"><img src="../../../assets/linkedin-brands.svg" alt=""></a>
 
             <div>
               <div  *ngIf="!isLogged">
@@ -28,72 +28,124 @@
   <div>
     <h1>Bienvenidos al porfolio de Juan Pablo Rajoy</h1>
     <h6 id="ologger">Debe estar logeado para visualizar el contenido</h6>
-    <h6 class="info">Para ingresar por favor utilice la siguiente cuenta. <br>
-      <i> Usuario: "user" </i> <br>
-     <i> Contraseña: "123456" </i> 
-    </h6>
+    <!-- <h6 class="info">Para ingresar por favor utilice la siguiente cuenta. <br> -->
+      <!-- <i> Usuario: "user" </i> <br> -->
+     <!-- <i> Contraseña: "123456" </i>  -->
+    <!-- </h6> -->
   
     </div>
 </div>
-
-  
-
-<!-- Modal de iniciar Sesion -->
+<!-- Modal Ingreso  -->
 <div class="modal" tabindex="-1" id="iniciarSesion">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">INICIAR SESION</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="card">
-            <div class="card-header">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                      <a class="nav-link active" >Iniciar Sesión</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" >Crear Cuenta</a>
-                    </li>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">INICIAR SESION</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <!-- <div class="container"> -->
+              <div class="row">
+                <div class="card-header">
+                  <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a class="nav-link active" routerLink="/">Iniciar Sesión</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" routerLink="/registrar" data-bs-toggle="modal" data-bs-target="#registrar"
+                        (click)="onNewRegistro()" >Crear Cuenta</a>
+                      </li>
+                    </ul>
+              </div>
+                  <div class="col-md-8 mx-auto">
                     
-                  </ul>
-            </div>
-            <!-- <div class="container"> -->
-                <div class="row">
-                    <div class="col-md-8 mx-auto">
-                        <form #f="ngForm" (ngSubmit)="onLogin()" novalidate >
-                            <div class="form-group">
-                                <label for="nombre">Nombre</label>
-                                <input type="text" class="form-control" id="nombre" name="nombre"
-                                [(ngModel)]="nombreUsuario" required>
-                            </div>
-                            <div class="form-group">
-                               <label for="password">Contraseña</label>
-                               <input type="password" name="password" id="password" class="form-control"
-                               [(ngModel)]="password" required>
-                            </div>
-                            <!-- <div class="col-auto descrip"> -->
-                              <!-- <span id="passwordHelpInline" class="form-text"> -->
-                                <!-- Contra -->
-                              <!-- </span> -->
-                            <!-- </div> -->
-                            <button class="btn btn-outline-success btn-block modalBoton" [disabled]="!f.valid" routerLink="/">
-                              <i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
-                              <!-- <button class="btn btn-outline-secondary btn-block modalBoton" data-bs-dismiss="modal"> -->
-                                <!-- <i class="fa-solid fa-square-plus"></i> Crear Cuenta</button> -->
-                        </form>
-                    </div>
-                </div>
-            <!-- </div> -->
-        </div>
-        <div class="modal-footer">
-          <div  *ngIf="f.submitted && isLoginFail" class="alert alert-danger d-flex align-items-center" role="alert">
-            <div>
-              Usuario o Contraseña incorrecto.
-            </div>
-        </div>
-        </div>
+                      <form #f="ngForm" (ngSubmit)="onLogin()" novalidate >
+                          <div class="form-group">
+                              <label for="nombre">Nombre Usuario</label>
+                              <input type="text" class="form-control" id="nombre" name="nombre"
+                              [(ngModel)]="nombreUsuario" required>
+                          </div>
+                          <div class="form-group">
+                             <label for="password">Contraseña</label>
+                             <input type="password" name="password" id="password" class="form-control"
+                             [(ngModel)]="password" required>
+                          </div>
+                          <button class="btn btn-outline-success btn-block modalBoton" [disabled]="!f.valid" routerLink="/">
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
+                      </form>
+                  </div>
+              </div>
+          <!-- </div> -->
+      </div>
+      <div class="modal-footer">
+        <!-- <div  *ngIf="f.submitted && isLoginFail" class="alert alert-danger d-flex align-items-center" role="alert"> -->
+          <!-- <div><i class="fa-solid fa-triangle-exclamation"></i>  -->
+            <!-- Usuario o Contraseña incorrecto. -->
+          <!-- </div> -->
       </div>
     </div>
+  </div>
+</div>
+<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+<!-- Modal Registro -->
+<div class="modal" tabindex="-1" id="registrar">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">REGISTRARSE</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <!-- <div class="container"> -->
+              <div class="row">
+                <div class="card-header">
+                  <ul class="nav nav-tabs">
+                      <li class="nav-item">
+                        <a class="nav-link" routerLink="/"data-bs-toggle="modal" data-bs-target="#iniciarSesion">Iniciar Sesión</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link active" routerLink="/" >Crear Cuenta</a>
+                      </li>
+                    </ul>
+              </div>
+                  <div class="col-md-8 mx-auto">
+                    
+                      <form novalidate #f="ngForm" (ngSubmit)="onRegister()" >
+                          <div class="form-group">
+                              <label for="nombre">Nombre</label>
+                              <input type="text" class="form-control" id="nombre" name="nombre"
+                              [(ngModel)]="nombre" required>
+                          </div>
+                          <div class="form-group">
+                            <label for="nombreUsuario">Nombre Usuario</label>
+                            <input type="text" class="form-control" id="nombreUsuario" name="nombreUsuario"
+                            [(ngModel)]="nombreUsuario" required>
+                        </div>
+                          <div class="form-group">
+                             <label for="password">Contraseña</label>
+                             <input type="password" name="password" id="password" class="form-control"
+                             [(ngModel)]="password" required>
+                          </div>
+                          <!-- <div class="col-auto"> -->
+                            <!-- <span id="passwordHelpInline" class="form-text"> -->
+                              <!-- La Contraseña debe tener al menos 6 caracteres. -->
+                            <!-- </span> -->
+                          <!-- </div> -->
+                          <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                            [(ngModel)]="email" required>
+                        </div>
+                            <button class="btn btn-outline-secondary btn-block modalBoton" [disabled]="!f.valid">
+                              <i class="fa-solid fa-square-plus"></i> Crear Cuenta</button>
+                      </form>
+                  </div>
+              </div>
+          <!-- </div> -->
+      </div>
+      <div class="modal-footer">
+        <h5></h5>
+      </div>
+    </div>
+  </div>
 </div>

@@ -2,37 +2,39 @@
     <div id="tituloG">
         <h2 id="titulo">Hard & Soft Skills</h2>
         <div id="buttonn" *ngIf="isAdmin">
-            <button type="button" class="btn btn-primary but"
+            <button type="button" class="btn btn-outline-primary but"
             data-bs-toggle="modal" data-bs-target="#skillModal" (click)="onNewSkill()">
             <i class="fa-solid fa-plus"></i></button>
         </div>
     </div>
-    
+      <div class="scroll" >
         <article id="Skill" *ngFor="let skill of skills, let i = index">
             <div class="text-center" >
                 <circle-progress
                     [percent]="skill.porcentaje"
                     [radius]="100"
                     [subtitle]= "skill.nombre"
-                    [subtitleColor]="'#5D6D7E'"
+                    [titleColor]="'#3602f2'"
+                    [subtitleColor]="'#f20707'"
+                    [titleFontSize]="'35'"
                     [subtitleFontSize]="'20'"
                     [outerStrokeWidth]="10"
                     [innerStrokeWidth]="8"
-                    [outerStrokeColor]="'#52BE80'"
+                    [outerStrokeColor]="'#dfe22c'"
                     [innerStrokeColor]="'#5DADE2'"
                     [animation]="true"
                     [animationDuration]="300"
                 ><p></p></circle-progress>
                 <div id="buttones" *ngIf="isAdmin">
-                    <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#skillModal"
+                    <button type="button" class="btn btn-outline-warning but" data-bs-toggle="modal" data-bs-target="#skillModal"
                     (click)="editarSkill(i)"><i class="fa-solid fa-pencil"></i></button>
                     <!-- Boton de Eliminar -->
-                    <button type="button" class="btn btn-danger but"
+                    <button type="button" class="btn btn-outline-danger but"
                     (click)="eliminarSkill(i)"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
              </div>
         </article>
-   
+      </div>
 </section>
 
     <!-- Modal  Agregar - Editar -->

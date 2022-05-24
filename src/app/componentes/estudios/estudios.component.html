@@ -3,7 +3,7 @@
         <h2>Educacion</h2>
         <div *ngIf="isAdmin">
              <!-- Boton de Agregar -->
-             <button type="button" class="btn btn-primary but"
+             <button type="button" class="btn btn-outline-primary but"
             data-bs-toggle="modal" data-bs-target="#estudioForm" (click)="onNewEstudio()">
             <i class="fa-solid fa-plus"></i></button>
         </div>
@@ -11,16 +11,19 @@
 
     <div class="col-lg-11" id="educacionTexto"  *ngFor="let estudios of estudio, let i = index">
         <ul>
+          <li>
+            <img [src]="estudios.urlLogo" width="5%" height="5%"> 
+          </li>
             <li id="tituloEstudio">
                 <div>
                     <h3>{{estudios.tituloEstudios}}</h3><br> <h6>{{estudios.fechaInicio}} - {{estudios.fechaFin}}</h6> 
                 </div>
                 <div *ngIf="isAdmin"> 
                     <!-- Boton de Editar -->
-                    <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#estudioForm"
+                    <button type="button" class="btn btn-outline-warning but" data-bs-toggle="modal" data-bs-target="#estudioForm"
                       (click)="editarEstudio(i)"><i class="fa-solid fa-pencil"></i></button>
                     <!-- Boton de Eliminar -->
-                    <button type="button" class="btn btn-danger but"
+                    <button type="button" class="btn btn-outline-danger but"
                      (click)="eliminarEstudio(i)"><i class="fa-solid fa-trash-can"></i></button>
                 </div>
             </li>
@@ -56,10 +59,13 @@
               <input type="date" name="fechaFin" formControlName="fechaFin" class="form-control" id="fechaFin"
               placeholder="Fecha de finalizacion">
               <label for="text">Url Logo</label>
-              <input type="file" name="urlLogo" formControlName="urlLogo" class="form-control form-control-sm" id="urlLogo">
+              <input type="text" name="urlLogo" formControlName="urlLogo" class="form-control form-control-sm" id="urlLogo"
+              placeholder="Ingrese url de la imagen">
               <label for="text">Descripcion</label>
-              <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion"
-              placeholder="Descripcion del estudio">
+              <textarea name="descripcion" maxlength="255" rows="5" cols="60" placeholder="Descripcion del estudio" formControlName="descripcion"
+              class="form-control" id="descripcion"></textarea>
+              <!-- <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion" -->
+              <!-- placeholder="Descripcion del estudio"> -->
             </div>
             <div class="modal-footer justify-content-md-center">
               <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">

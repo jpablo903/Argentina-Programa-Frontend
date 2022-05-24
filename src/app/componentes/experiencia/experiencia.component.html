@@ -3,7 +3,7 @@
         <h2>Experiencia Laboral</h2>
         <div *ngIf="isAdmin">
              <!-- Boton de Agregar -->
-             <button type="button" class="btn btn-primary but"
+             <button type="button" class="btn btn-outline-primary but"
              data-bs-toggle="modal" data-bs-target="#experienciaForm" (click)="onNewExp()">
              <i class="fa-solid fa-plus"></i></button>
         </div>
@@ -18,10 +18,10 @@
                 </div>
                <div *ngIf="isAdmin">
                    <!-- Boton de Editar -->
-                    <button type="button" class="btn btn-warning but" data-bs-toggle="modal" data-bs-target="#experienciaForm"
+                    <button type="button" class="btn btn-outline-warning but" data-bs-toggle="modal" data-bs-target="#experienciaForm"
                     (click)="editarExperiencia(i)"><i class="fa-solid fa-pencil"></i></button>
                     <!-- Boton de Eliminar -->
-                    <button type="button" class="btn btn-danger but"
+                    <button type="button" class="btn btn-outline-danger but"
                     (click)="eliminarExperiencia(i)"><i class="fa-solid fa-trash-can"></i></button>
                </div>
             </li>
@@ -50,7 +50,8 @@
               <input type="text" name="nombreCompania" formControlName="nombreCompania" class="form-control" id="institucionEstudio"
               placeholder="Nombre de compania">
               <label for="text">Url Logo</label>
-              <input type="file" name="imgUrl" formControlName="imgUrl" class="form-control form-control-sm" id="imgUrl">
+              <input type="text" name="imgUrl" formControlName="imgUrl" class="form-control form-control-sm" id="imgUrl"
+              placeholder="Ingrese url de la imagen">
               <label for="text">Lugar</label>
               <input type="text" name="lugar" formControlName="lugar" class="form-control" id="lugar" placeholder="Lugar de trabajo">
               <label for="text">Fecha Inicio</label>
@@ -60,8 +61,10 @@
               <input type="date" name="fechaFin" formControlName="fechaFin" class="form-control" id="fechaFin"
               placeholder="Fecha de finalizacion">
               <label for="text">Descripcion</label>
-              <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion"
-              placeholder="Descripcion del estudio">
+              <textarea name="descripcion" maxlength="255" rows="5" cols="60" placeholder="Breve descripcion" formControlName="descripcion"
+              class="form-control" id="descripcion"></textarea>
+              <!-- <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion" -->
+              <!-- placeholder="Descripcion del estudio"> -->
             </div>
             <div class="modal-footer justify-content-md-center">
               <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">

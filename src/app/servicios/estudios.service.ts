@@ -9,6 +9,8 @@ import { Estudios } from '../models/estudios';
 export class EstudiosService {
 
   estudiosUrl = "https://backargentinaprograma.herokuapp.com/estudios/";
+  // estudiosUrl = "https://localhost:8080/estudios/";
+  
 
   hpptOptions = {
     headers: new HttpHeaders({
