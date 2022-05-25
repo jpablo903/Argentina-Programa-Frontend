@@ -15,6 +15,7 @@ import { TokenService } from 'src/app/servicios/token.service';
 export class BarNavComponent implements OnInit {
       public nuevo: NuevoUsuario[] = [];
       registerForm: FormGroup;
+      loginForm: FormGroup;
   
       nuevoUsuario!: NuevoUsuario;
       nombre!: string;
@@ -35,10 +36,14 @@ export class BarNavComponent implements OnInit {
     private toastr: ToastrService,
     private router: Router) { 
       this.registerForm = this.formBuilder.group({
-        nombre:['', Validators.required],
-        nombreUsuario:['', Validators.required],
-        email:['', Validators.required],
-        password:['', Validators.required]
+        nombre:['', [Validators.required]],
+        nombreUsuario:['', [Validators.required, Validators.minLength(4)]],
+        email:['', [Validators.required, Validators.email]],
+        password:['', [Validators.required, Validators.minLength(6)]]
+      })
+      this.loginForm = this.formBuilder.group({
+        nombreUsuario:['', [Validators.required, Validators.minLength(4)]],
+        password:['', [Validators.required, Validators.minLength(6)]]
       })
     }
 
@@ -131,4 +136,27 @@ export class BarNavComponent implements OnInit {
     });
     }
 
+    get nombreValido(){
+      return this.registerForm.get('nombre');
+    }
+    
+    get nombreUsuarioValido(){
+      return this.registerForm.get('nombreUsuario');
+    }
+
+    get emailValido(){
+      return this.registerForm.get('email');
+    }
+
+    get passValido(){
+      return this.registerForm.get('password');
+    }
+
+    get nombreUsuarioValidoL(){
+      return this.loginForm.get('nombreUsuario');
+    }
+
+    get passValidoL(){
+      return this.loginForm.get('password');
+    }
   }
