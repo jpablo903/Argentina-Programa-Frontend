@@ -27,10 +27,10 @@ export class ProyectosComponent implements OnInit {
     ) {
       this.proyectoForm = this.formBuilder.group({
         id:[''],
-        nombreProyecto:['', Validators.required],
-        descripcion:['', Validators.required],
-        urlImagen:[''],
-        urlProyecto:['']
+        nombreProyecto:['', [Validators.required, Validators.minLength(4)]],
+        descripcion:['', [Validators.required, Validators.minLength(50), Validators.maxLength(255)]],
+        urlImagen:['', [Validators.required]],
+        urlProyecto:['', [Validators.required]]
       })
      }
 

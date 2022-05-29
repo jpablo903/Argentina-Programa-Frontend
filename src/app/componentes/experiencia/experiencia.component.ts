@@ -29,13 +29,13 @@ export class ExperienciaComponent implements OnInit {
     ) {
       this.experienciaForm = this.formBuilder.group({
         id:[''],
-        puesto:['', Validators.required],
-        nombreCompania:['', Validators.required],
+        puesto:['', [Validators.required]],
+        nombreCompania:['', [Validators.required]],
         imgUrl:[''],
-        lugar:[''],
-        fechaInicio:['', Validators.required],
-        fechaFin:['', Validators.required],
-        descripcion:['', Validators.required]
+        lugar:['', [Validators.required]],
+        fechaInicio:['', [Validators.required]],
+        fechaFin:['', [Validators.required]],
+        descripcion:['', [Validators.required, Validators.maxLength(255)]]
       });
      }
 

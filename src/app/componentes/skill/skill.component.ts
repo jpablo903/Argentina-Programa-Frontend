@@ -27,9 +27,9 @@ export class SkillComponent implements OnInit {
     ) {
       this.skillForm = this.formBuilder.group({
         id:[''],
-        nombre:['', Validators.required],
-        porcentaje:['', Validators.required],
-        urlImagen:['']
+        nombre:['', [Validators.required, Validators.minLength(2)]],
+        porcentaje:['', [Validators.required, Validators.maxLength(2)]],
+        urlImagen:['', [Validators.required]]
       })
      }
 

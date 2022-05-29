@@ -27,12 +27,12 @@ export class PersonaComponent implements OnInit {
     ) {
       this.acercaDeForm = this.formBuilder.group({
         id:[''],
-        nombre:['', Validators.required],
-        apellido:['', Validators.required],
-        profesion:['', Validators.required],
-        acercaDe:['', Validators.required],
-        urlImagen:[''],
-        urlImagenBanner:['']
+        nombre:['', [Validators.required]],
+        apellido:['', [Validators.required]],
+        profesion:['', [Validators.required]],
+        acercaDe:['', [Validators.required, Validators.maxLength(255)]],
+        urlImagen:['', [Validators.required]],
+        urlImagenBanner:['',[Validators.required]]
       })
      }
 

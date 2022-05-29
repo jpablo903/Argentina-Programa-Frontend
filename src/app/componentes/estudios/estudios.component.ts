@@ -32,12 +32,12 @@ export class EstudiosComponent implements OnInit {
     ) { 
       this.estudioForm = this.formBuilder.group({
         id:[''],
-        tituloEstudios:['', Validators.required],
-        institucionEstudio:['', Validators.required],
-        fechaInicio:['', Validators.required],
-        fechaFin:['', Validators.required],
+        tituloEstudios:['', [Validators.required]],
+        institucionEstudio:['', [Validators.required]],
+        fechaInicio:['', [Validators.required]],
+        fechaFin:['', [Validators.required]],
         urlLogo:[''],
-        descripcion:['', Validators.required]
+        descripcion:['', [Validators.required, Validators.maxLength(255)]]
       });
     }
 
