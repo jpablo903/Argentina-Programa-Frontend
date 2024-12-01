@@ -1,13 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 import { Estudios } from 'src/app/models/estudios';
 import { EstudiosService } from 'src/app/servicios/estudios.service';
-import { ToastrService } from 'ngx-toastr';
-
-import { FormBuilder, FormGroup, Validators} from '@angular/forms';
-import { AuthService } from 'src/app/servicios/auth.service';
-import { TokenService } from 'src/app/servicios/token.service';
-
+import { AuthStateService } from 'src/app/shared/auth-state.service';
 
 @Component({
   selector: 'app-estudios',
@@ -15,48 +12,36 @@ import { TokenService } from 'src/app/servicios/token.service';
   styleUrls: ['./estudios.component.css']
 })
 export class EstudiosComponent implements OnInit {
-
+  @ViewChild('estudioDialog') estudioDialog!: TemplateRef<any>;
   public estudio: Estudios[] = [];
-  estudioForm: FormGroup;  
-  message: '' = "";
-  roles: string[] = [];
+  estudioForm: FormGroup;
   isAdmin: boolean = false;
-  isLogged = false
+  private dialogRef: MatDialogRef<any> | null = null;
 
   constructor(
     private estudiosService: EstudiosService,
     private formBuilder: FormBuilder,
-    private authService: AuthService,
     private toastr: ToastrService,
-    private tokenService: TokenService
-    ) { 
-      this.estudioForm = this.formBuilder.group({
-        id:[''],
-        tituloEstudios:['', [Validators.required]],
-        institucionEstudio:['', [Validators.required]],
-        fechaInicio:['', [Validators.required]],
-        fechaFin:['', [Validators.required]],
-        urlLogo:[''],
-        descripcion:['', [Validators.required, Validators.maxLength(255)]]
-      });
-    }
+    private authStateService: AuthStateService,
+    private dialog: MatDialog
+  ) {
+    this.estudioForm = this.formBuilder.group({
+      id: [''],
+      tituloEstudios: ['', [Validators.required]],
+      institucionEstudio: ['', [Validators.required]],
+      fechaInicio: ['', [Validators.required]],
+      fechaFin: [''],
+      urlLogo: [''],
+      descripcion: ['', [Validators.required, Validators.maxLength(255)]]
+    });
+
+    this.authStateService.isAdmin$.subscribe(
+      isAdmin => this.isAdmin = isAdmin
+    );
+  }
 
   ngOnInit() {
     this.reloadData();
-
-    if(this.tokenService.getToken()){
-      this.isLogged = true;
-    }else {
-      this.isLogged = false;
-    }
-
-    this.roles = this.tokenService.getAuthorities();
-    this.roles.forEach( role => {
-      if(role === 'ROLE_ADMIN') {
-        this.isAdmin = true;
-        }
-      })
-    
   }
 
   private reloadData() {
@@ -64,23 +49,50 @@ export class EstudiosComponent implements OnInit {
       (data) => {
         this.estudio = data;
       }
-    ); 
+    );
   }
 
-  private borrarForm() {
-    this.estudioForm.setValue({
-      id: '',
-      tituloEstudios:'',
-      institucionEstudio:'',
-      fechaInicio:'',
-      fechaFin:'',
-      urlLogo:'',
-      descripcion:''
+  onNewEstudio() {
+    this.borrarForm();
+    this.openEstudioDialog();
+  }
+
+  editarEstudio(index: number) {
+    let estudio: Estudios = this.estudio[index];
+    this.cargarEstudio(estudio);
+    this.openEstudioDialog();
+  }
+
+  private openEstudioDialog() {
+    if (this.dialogRef) return;
+
+    this.dialogRef = this.dialog.open(this.estudioDialog, {
+      width: '600px',
+      disableClose: true,
+      autoFocus: true,
+      panelClass: ['mat-typography']
+    });
+
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.dialogRef = null;
     });
   }
 
-  private cargarEstudios(estudio: Estudios) {
-    this.estudioForm.setValue({
+  private borrarForm() {
+    this.estudioForm.reset();
+    this.estudioForm.patchValue({
+      id: '',
+      tituloEstudios: '',
+      institucionEstudio: '',
+      fechaInicio: '',
+      fechaFin: '',
+      urlLogo: '',
+      descripcion: ''
+    });
+  }
+
+  private cargarEstudio(estudio: Estudios) {
+    this.estudioForm.patchValue({
       id: estudio.id,
       tituloEstudios: estudio.tituloEstudios,
       institucionEstudio: estudio.institucionEstudio,
@@ -88,55 +100,61 @@ export class EstudiosComponent implements OnInit {
       fechaFin: estudio.fechaFin,
       urlLogo: estudio.urlLogo,
       descripcion: estudio.descripcion
-      
     });
   }
 
- 
-  nuevoEstudio(id: number){
+  nuevoEstudio(id: number) {
+    if (this.estudioForm.invalid) return;
+
     let estudio: Estudios = this.estudioForm.value;
-    if(this.estudioForm.get('id')?.value == ''){
-      this.estudiosService.save(estudio).subscribe(
-        (newEstudio: Estudios) =>{
-          this.toastr.success('Estudio Agregado', 'FELICITACIONES', {
-            timeOut: 3000, positionClass: 'toast-top-center'});
+    
+    if (this.estudioForm.get('id')?.value === '') {
+      this.estudiosService.save(estudio).subscribe({
+        next: (newEstudio: Estudios) => {
+          this.toastr.success('Estudio Agregado', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
+          });
           this.estudio.push(newEstudio);
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al guardar el estudio', 'ERROR');
         }
-      );
-    }else{
-      this.estudiosService.actualizar(id, estudio).subscribe(
-        ()=>{
-          this.toastr.success('Estudio Actualizado', 'OK', {
-            timeOut: 3000, positionClass: 'toast-top-center'
+      });
+    } else {
+      this.estudiosService.actualizar(id, estudio).subscribe({
+        next: () => {
+          this.toastr.success('Estudio Actualizado', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
           });
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al actualizar el estudio', 'ERROR');
         }
-      )
+      });
     }
   }
 
-  public onNewEstudio(){
-    this.borrarForm();
-  }
-
-  public editarEstudio(index: number){
+  eliminarEstudio(index: number) {
     let estudio: Estudios = this.estudio[index];
-    this.cargarEstudios(estudio);
-  }
-
-  public eliminarEstudio(index: number){
-    let estudio: Estudios = this.estudio[index];
-     if(confirm("¿Desea eliminar el Estudio selecionado?")){
-      this.estudiosService.eliminar(estudio.id).subscribe(
-        ()=> {
-          this.toastr.error('Estudio Eliminado', 'ATENCION!', {
-            timeOut: 3000, positionClass: 'toast-top-center'
+    if (confirm('¿Desea eliminar el estudio seleccionado?')) {
+      this.estudiosService.eliminar(estudio.id).subscribe({
+        next: () => {
+          this.toastr.warning('Estudio Eliminado', 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
           });
           this.reloadData();
+        },
+        error: (error) => {
+          this.toastr.error('Error al eliminar el estudio', 'ERROR');
         }
-      )
+      });
     }
   }
-
 }

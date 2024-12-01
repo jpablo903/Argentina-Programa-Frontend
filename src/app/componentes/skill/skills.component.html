@@ -1,0 +1,109 @@
+<div class="skills-section">
+  <!-- Encabezado -->
+  <mat-card class="section-header">
+    <mat-card-header>
+      <mat-card-title>Hard & Soft Skills</mat-card-title>
+      <div *ngIf="isAdmin" class="header-actions">
+        <button mat-fab color="primary" (click)="onNewSkill()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+  <div class="carousel-container">
+    <swiper
+      [slidesPerView]="3"
+      [spaceBetween]="30"
+      [pagination]="{ clickable: true }"
+      [navigation]="true"
+      [breakpoints]="{
+        '0': {
+          slidesPerView: 1,
+          spaceBetween: 20
+        },
+        '768': {
+          slidesPerView: 2,
+          spaceBetween: 30
+        },
+        '1024': {
+          slidesPerView: 3,
+          spaceBetween: 30
+        }
+      }"
+    >
+      <ng-container *ngFor="let skill of skills; let i = index">
+        <ng-template swiperSlide>
+          <mat-card class="skill-card">
+            <mat-card-content class="skill-content">
+              <div class="progress-circle">
+                <circle-progress
+                  [percent]="skill.porcentaje"
+                  [radius]="100"
+                  [subtitle]="skill.nombre"
+                  [titleColor]="'#ffffff'"
+                  [subtitleColor]="'#ffffff'"
+                  [titleFontSize]="'35'"
+                  [subtitleFontSize]="'20'"
+                  [outerStrokeWidth]="10"
+                  [innerStrokeWidth]="8"
+                  [outerStrokeColor]="'#4CAF50'"
+                  [innerStrokeColor]="'rgba(255, 255, 255, 0.2)'"
+                  [animation]="true"
+                  [animationDuration]="300"
+                  [showSubtitle]="true"
+                  [showUnits]="true"
+                  [units]="'%'"
+                  [unitsFontSize]="'20'">
+                </circle-progress>
+              </div>
+
+              <div class="skill-actions" *ngIf="isAdmin">
+                <button mat-icon-button color="primary" (click)="editarSkill(i)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="eliminarSkill(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </ng-template>
+      </ng-container>
+    </swiper>
+  </div>
+</div>
+
+<!-- Dialog para agregar/editar -->
+<ng-template #skillDialog>
+  <h2 mat-dialog-title>{{skillForm.get('id')?.value ? 'Editar' : 'Nueva'}} Skill</h2>
+  <mat-dialog-content>
+    <form [formGroup]="skillForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+        <mat-error *ngIf="skillForm.get('nombre')?.hasError('required')">
+          El nombre es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Porcentaje</mat-label>
+        <input matInput type="number" formControlName="porcentaje" min="0" max="100">
+        <mat-error *ngIf="skillForm.get('porcentaje')?.hasError('required')">
+          El porcentaje es requerido
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary"
+            [disabled]="skillForm.invalid"
+            (click)="nuevaSkill(skillForm.get('id')?.value)">
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</ng-template>

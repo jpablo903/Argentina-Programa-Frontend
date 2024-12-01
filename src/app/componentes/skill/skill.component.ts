@@ -1,120 +1,172 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Skill } from 'src/app/models/skill';
 import { SkillService } from 'src/app/servicios/skill.service';
-import { TokenService } from 'src/app/servicios/token.service';
+import { AuthStateService } from 'src/app/shared/auth-state.service';
+import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
+
+SwiperCore.use([Navigation, Pagination]);
 
 @Component({
-  selector: 'app-skill',
-  templateUrl: './skill.component.html',
-  styleUrls: ['./skill.component.css']
+  selector: 'app-skills',
+  templateUrl: './skills.component.html',
+  styleUrls: ['./skills.component.css']
 })
-export class SkillComponent implements OnInit {
-
-  public skills: Skill[] = []; 
+export class SkillsComponent implements OnInit {
+  @ViewChild('skillDialog') skillDialog!: TemplateRef<any>;
+  public skills: Skill[] = [];
   skillForm: FormGroup;
-  message: '' = "";
-  roles: string[] = [];
   isAdmin: boolean = false;
-  isLogged = false;
+  private dialogRef: MatDialogRef<any> | null = null;
+
+  swiperConfig: SwiperOptions = {
+    slidesPerView: 3,
+    spaceBetween: 30,
+    navigation: true,
+    pagination: { clickable: true },
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+        spaceBetween: 20
+      },
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 30
+      },
+      1024: {
+        slidesPerView: 3,
+        spaceBetween: 30
+      }
+    }
+  };
 
   constructor(
     private skillService: SkillService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private tokenService: TokenService
-    ) {
-      this.skillForm = this.formBuilder.group({
-        id:[''],
-        nombre:['', [Validators.required, Validators.minLength(2)]],
-        porcentaje:['', [Validators.required, Validators.maxLength(2)]],
-        urlImagen:['', [Validators.required]]
-      })
-     }
+    private authStateService: AuthStateService,
+    private dialog: MatDialog
+  ) {
+    this.skillForm = this.formBuilder.group({
+      id: [''],
+      nombre: ['', [Validators.required]],
+      porcentaje: ['', [Validators.required, Validators.min(0), Validators.max(100)]]
+    });
+
+    this.authStateService.isAdmin$.subscribe(
+      isAdmin => this.isAdmin = isAdmin
+    );
+  }
 
   ngOnInit() {
     this.reloadData();
-
-    if(this.tokenService.getToken()){
-      this.isLogged = true;
-    }else {
-      this.isLogged = false;
-    }
-    
-    this.roles = this.tokenService.getAuthorities();
-    this.roles.forEach( role => {
-      if(role === 'ROLE_ADMIN') {
-        this.isAdmin = true;
-        }
-      })
-      
   }
 
-  private reloadData(){
+  private reloadData() {
     this.skillService.lista().subscribe(
       (data) => {
         this.skills = data;
       }
-    )
+    );
   }
+
+  onNewSkill() {
+    this.borrarForm();
+    this.openSkillDialog();
+  }
+
+  editarSkill(index: number) {
+    let skill: Skill = this.skills[index];
+    this.cargarSkill(skill);
+    this.openSkillDialog();
+  }
+
+  private openSkillDialog() {
+    if (this.dialogRef) return;
+
+    this.dialogRef = this.dialog.open(this.skillDialog, {
+      width: '400px',
+      disableClose: true,
+      autoFocus: true,
+      panelClass: ['mat-typography']
+    });
+
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.dialogRef = null;
+    });
+  }
+
   private borrarForm() {
-    this.skillForm.setValue({
+    this.skillForm.reset();
+    this.skillForm.patchValue({
       id: '',
-      nombre:'',
-      porcentaje:'',
-      urlImagen:''
+      nombre: '',
+      porcentaje: ''
     });
   }
-  private cargarSkill(skills: Skill) {
-    this.skillForm.setValue({
-      id: skills.id,
-      nombre: skills.nombre,
-      porcentaje: skills.porcentaje,
-      urlImagen: skills.urlImagen
-      
+
+  private cargarSkill(skill: Skill) {
+    this.skillForm.patchValue({
+      id: skill.id,
+      nombre: skill.nombre,
+      porcentaje: skill.porcentaje
     });
   }
-  nuevoSkill(id: number){
-    let skills: Skill = this.skillForm.value;
-    if(this.skillForm.get('id')?.value == ''){
-      this.skillService.save(skills).subscribe(
-        (newSkill: Skill) =>{
-          this.toastr.success('Skill Agregado', 'FELICITACIONES', {
-            timeOut: 3000, positionClass: 'toast-top-center'});
+
+  nuevaSkill(id: number) {
+    if (this.skillForm.invalid) return;
+
+    let skill: Skill = this.skillForm.value;
+    
+    if (this.skillForm.get('id')?.value === '') {
+      this.skillService.save(skill).subscribe({
+        next: (newSkill: Skill) => {
+          this.toastr.success('Skill Agregada', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
+          });
           this.skills.push(newSkill);
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al guardar la skill', 'ERROR');
         }
-      );
-    }else{
-      this.skillService.actualizar(id, skills).subscribe(
-        ()=>{
-          this.toastr.success('Skill Actualizado', 'OK', {
-            timeOut: 3000, positionClass: 'toast-top-center'
+      });
+    } else {
+      this.skillService.actualizar(id, skill).subscribe({
+        next: () => {
+          this.toastr.success('Skill Actualizada', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
           });
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al actualizar la skill', 'ERROR');
         }
-      )
+      });
     }
   }
-  public onNewSkill(){
-    this.borrarForm();
-  }
-  public editarSkill(index: number){
-    let skills: Skill = this.skills[index];
-    this.cargarSkill(skills);
-  }
-  public eliminarSkill(index: number){
-    let skills: Skill = this.skills[index];
-     if(confirm("¿Desea eliminar el Skill selecionado?")){
-      this.skillService.eliminar(skills.id).subscribe(
-        ()=> {
-          this.toastr.error('Skill Eliminado', 'ATENCION!', {
-            timeOut: 3000, positionClass: 'toast-top-center'
+
+  eliminarSkill(index: number) {
+    let skill: Skill = this.skills[index];
+    if (confirm('¿Desea eliminar la skill seleccionada?')) {
+      this.skillService.eliminar(skill.id).subscribe({
+        next: () => {
+          this.toastr.warning('Skill Eliminada', 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
           });
           this.reloadData();
+        },
+        error: (error) => {
+          this.toastr.error('Error al eliminar la skill', 'ERROR');
         }
-      )
+      });
     }
   }
 }

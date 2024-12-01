@@ -1,0 +1,78 @@
+/* login-dialog.component.css */
+.login-container {
+  padding: 20px;
+  background-color: white;
+}
+
+h2 {
+  color: #1976d2;
+  margin-bottom: 20px;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-dialog-content {
+  padding: 0;
+}
+
+mat-dialog-actions {
+  padding: 16px 0;
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+input.mat-input-element {
+  color: rgba(0, 0, 0, 0.87);
+}
+
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+::ng-deep .mat-form-field-outline {
+  color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* login-dialog.component.css */
+.login-container {
+  padding: 20px;
+  background-color: white;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0;
+  margin-top: 16px;
+}
+
+/* Botón Cancelar */
+button[mat-button] {
+  background-color: #b32937b7;
+  color: white;
+  font-weight: 500;
+}
+
+button[mat-button]:hover {
+  background-color: rgba(235, 20, 41, 0.971);
+}
+
+/* Botón Iniciar Sesión */
+button[mat-raised-button] {
+  background-color: #28a745;  /* Verde */
+  color: white;
+}
+
+button[mat-raised-button]:hover {
+  background-color: #218838;
+}
+
+button[mat-raised-button][disabled] {
+  background-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.26);
+}

@@ -8,8 +8,8 @@ import { Experiencia } from '../models/experiencia';
 })
 export class ExperienciaService {
 
-  experienciaUrl = "https://backargentinaprograma.herokuapp.com/experiencia/";
-  // experienciaUrl = "https://localhost:8080/experiencia/";
+  experienciaUrl = "https://portfolio-backend-ev9h.onrender.com/experiencia/";
+   //experienciaUrl = "http://localhost:8080/experiencia/";
   
 
   hpptOptions = {

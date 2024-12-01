@@ -1,83 +1,91 @@
-<div class="row" id="experiencia" *ngIf="isLogged">
-    <div id="tituloGeneral">
-        <h2>Experiencia Laboral</h2>
-        <div *ngIf="isAdmin">
-             <!-- Boton de Agregar -->
-             <button type="button" class="btn btn-outline-primary but"
-             data-bs-toggle="modal" data-bs-target="#experienciaForm" (click)="onNewExp()">
-             <i class="fa-solid fa-plus"></i></button>
+<div class="experience-section">
+  <!-- Encabezado -->
+  <mat-card class="section-header">
+    <mat-card-header>
+      <mat-card-title>Experiencia Laboral</mat-card-title>
+      <div *ngIf="isAdmin" class="header-actions">
+        <button mat-fab color="primary" (click)="onNewExperiencia()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+  <!-- Lista de Experiencias -->
+  <div class="experience-list">
+    <mat-card class="experience-card" *ngFor="let exp of experiencia; let i = index">
+      <mat-card-header>
+        <mat-card-title>{{exp.puesto}}</mat-card-title>
+        <mat-card-subtitle>{{exp.nombreCompania}}</mat-card-subtitle>
+        <div class="card-actions" *ngIf="isAdmin">
+          <button mat-icon-button color="primary" (click)="editarExperiencia(i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarExperiencia(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
-    </div>
-    
-    <div class="col-lg-11" *ngFor="let experiencia of experiencia, let i = index">
-        <ul>
-            <li id="tituloExperiencia">
-                <div>
-                    <h3>{{experiencia.puesto}}</h3> - <h4>{{experiencia.nombreCompania}}</h4><br>
-                    <h6>{{experiencia.fechaInicio}} - {{experiencia.fechaFin}} </h6>
-                </div>
-               <div *ngIf="isAdmin">
-                   <!-- Boton de Editar -->
-                    <button type="button" class="btn btn-outline-warning but" data-bs-toggle="modal" data-bs-target="#experienciaForm"
-                    (click)="editarExperiencia(i)"><i class="fa-solid fa-pencil"></i></button>
-                    <!-- Boton de Eliminar -->
-                    <button type="button" class="btn btn-outline-danger but"
-                    (click)="eliminarExperiencia(i)"><i class="fa-solid fa-trash-can"></i></button>
-               </div>
-            </li>
-        </ul>
-        <p>{{experiencia.descripcion}}</p>
-    </div>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="date-range">{{exp.fechaInicio}} - {{exp.fechaFin || 'Presente'}}</p>
+        <p class="description">{{exp.descripcion}}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
-<!-- Modal  Agregar - Editar -->
-<div class="modal fade" id="experienciaForm" tabindex="-1" aria-labelledby="addExperienciaLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addExpLabel">Experiencia</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-    
-          <form novalidate #f="ngForm" [formGroup]="experienciaForm" (ngSubmit)="nuevoExperiencia(experienciaForm.value.id)">
-            <input type="hidden" formControlName="id" name="id">
-            <div class="form-group">
-                <label for="text">Puesto Laboral</label>
-              <input type="text" name="puesto" formControlName="puesto" class="form-control" id="puesto"
-                placeholder="Puesto Laboral">
-                <label for="text">Compania</label>
-              <input type="text" name="nombreCompania" formControlName="nombreCompania" class="form-control" id="institucionEstudio"
-              placeholder="Nombre de compania">
-              <label for="text">Url Logo</label>
-              <input type="text" name="imgUrl" formControlName="imgUrl" class="form-control form-control-sm" id="imgUrl"
-              placeholder="Ingrese url de la imagen">
-              <label for="text">Lugar</label>
-              <input type="text" name="lugar" formControlName="lugar" class="form-control" id="lugar" placeholder="Lugar de trabajo">
-              <label for="text">Fecha Inicio</label>
-              <input type="date" name="fechaInicio" formControlName="fechaInicio" class="form-control" id="fechaInicio"
-              placeholder="Fecha de Inicio">
-              <label for="text">Fecha fin</label>
-              <input type="date" name="fechaFin" formControlName="fechaFin" class="form-control" id="fechaFin"
-              placeholder="Fecha de finalizacion">
-              <label for="text">Descripcion</label>
-              <textarea name="descripcion" maxlength="255" rows="5" cols="60" placeholder="Breve descripcion" formControlName="descripcion"
-              class="form-control" id="descripcion"></textarea>
-              <!-- <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion" -->
-              <!-- placeholder="Descripcion del estudio"> -->
-            </div>
-            <div class="modal-footer justify-content-md-center">
-              <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
-                Guardar
-              </button>
-              <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
-                Cerrar
-              </button>
-            </div>
-          </form>
-        </div>
+<!-- Dialog para agregar/editar -->
+<ng-template #experienciaDialog>
+  <h2 mat-dialog-title>{{experienciaForm.get('id')?.value ? 'Editar' : 'Nueva'}} Experiencia</h2>
+  <mat-dialog-content>
+    <form [formGroup]="experienciaForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Puesto</mat-label>
+        <input matInput formControlName="puesto">
+        <mat-error *ngIf="experienciaForm.get('puesto')?.hasError('required')">
+          El puesto es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Compañía</mat-label>
+        <input matInput formControlName="nombreCompania">
+        <mat-error *ngIf="experienciaForm.get('nombreCompania')?.hasError('required')">
+          La compañía es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <div class="date-fields">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha Inicio</mat-label>
+          <input matInput formControlName="fechaInicio">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha Fin</mat-label>
+          <input matInput formControlName="fechaFin">
+        </mat-form-field>
       </div>
-    </div>
-  </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion" rows="4"></textarea>
+        <mat-error *ngIf="experienciaForm.get('descripcion')?.hasError('required')">
+          La descripción es requerida
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary"
+            [disabled]="experienciaForm.invalid"
+            (click)="nuevaExperiencia(experienciaForm.get('id')?.value)">
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</ng-template>
     
 

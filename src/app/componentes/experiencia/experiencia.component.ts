@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Experiencia } from 'src/app/models/experiencia';
-import { AuthService } from 'src/app/servicios/auth.service';
 import { ExperienciaService } from 'src/app/servicios/experiencia.service';
-import { TokenService } from 'src/app/servicios/token.service';
+import { AuthStateService } from 'src/app/shared/auth-state.service';
 
 @Component({
   selector: 'app-experiencia',
@@ -12,127 +12,146 @@ import { TokenService } from 'src/app/servicios/token.service';
   styleUrls: ['./experiencia.component.css']
 })
 export class ExperienciaComponent implements OnInit {
-
+  @ViewChild('experienciaDialog') experienciaDialog!: TemplateRef<any>;
   public experiencia: Experiencia[] = [];
   experienciaForm: FormGroup;
-  message: '' = "";
-  roles: string[] = [];
   isAdmin: boolean = false;
-  isLogged = false
+  private dialogRef: MatDialogRef<any> | null = null;
 
   constructor(
     private experienciaService: ExperienciaService,
     private formBuilder: FormBuilder,
-    private authService: AuthService,
     private toastr: ToastrService,
-    private tokenService: TokenService
-    ) {
-      this.experienciaForm = this.formBuilder.group({
-        id:[''],
-        puesto:['', [Validators.required]],
-        nombreCompania:['', [Validators.required]],
-        imgUrl:[''],
-        lugar:['', [Validators.required]],
-        fechaInicio:['', [Validators.required]],
-        fechaFin:['', [Validators.required]],
-        descripcion:['', [Validators.required, Validators.maxLength(255)]]
-      });
-     }
+    private authStateService: AuthStateService,
+    private dialog: MatDialog
+  ) {
+    this.experienciaForm = this.formBuilder.group({
+      id: [''],
+      puesto: ['', [Validators.required]],
+      nombreCompania: ['', [Validators.required]],
+      fechaInicio: ['', [Validators.required]],
+      fechaFin: [''],
+      descripcion: ['', [Validators.required]]
+    });
+
+    this.authStateService.isAdmin$.subscribe(
+      isAdmin => this.isAdmin = isAdmin
+    );
+  }
 
   ngOnInit() {
     this.reloadData();
-
-    if(this.tokenService.getToken()){
-      this.isLogged = true;
-    }else {
-      this.isLogged = false;
-    }
-
-    this.roles = this.tokenService.getAuthorities();
-    this.roles.forEach( role => {
-      if(role === 'ROLE_ADMIN') {
-        this.isAdmin = true;
-        }
-      })
-
   }
 
-  private reloadData(){
+  private reloadData() {
     this.experienciaService.lista().subscribe(
       (data) => {
         this.experiencia = data;
       }
-    )
+    );
+  }
+
+  onNewExperiencia() {
+    this.borrarForm();
+    this.openExperienciaDialog();
+  }
+
+  editarExperiencia(index: number) {
+    let experiencia: Experiencia = this.experiencia[index];
+    this.cargarExperiencia(experiencia);
+    this.openExperienciaDialog();
+  }
+
+  private openExperienciaDialog() {
+    if (this.dialogRef) return;
+
+    this.dialogRef = this.dialog.open(this.experienciaDialog, {
+      width: '600px',
+      disableClose: true,
+      autoFocus: true,
+      panelClass: ['mat-typography']
+    });
+
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.dialogRef = null;
+    });
   }
 
   private borrarForm() {
-    this.experienciaForm.setValue({
+    this.experienciaForm.reset();
+    this.experienciaForm.patchValue({
       id: '',
-      puesto:'',
-      nombreCompania:'',
-      imgUrl:'',
-      lugar:'',
-      fechaInicio:'',
-      fechaFin:'',
-      descripcion:''
+      puesto: '',
+      nombreCompania: '',
+      fechaInicio: '',
+      fechaFin: '',
+      descripcion: ''
     });
   }
+
   private cargarExperiencia(experiencia: Experiencia) {
-    this.experienciaForm.setValue({
+    this.experienciaForm.patchValue({
       id: experiencia.id,
       puesto: experiencia.puesto,
       nombreCompania: experiencia.nombreCompania,
-      imgUrl: experiencia.imgUrl,
-      lugar: experiencia.lugar,
       fechaInicio: experiencia.fechaInicio,
       fechaFin: experiencia.fechaFin,
       descripcion: experiencia.descripcion
-      
     });
   }
-  nuevoExperiencia(id: number){
+
+  nuevaExperiencia(id: number) {
+    if (this.experienciaForm.invalid) return;
+
     let experiencia: Experiencia = this.experienciaForm.value;
-    if(this.experienciaForm.get('id')?.value == ''){
-      this.experienciaService.save(experiencia).subscribe(
-        (newExperiencia: Experiencia) =>{
-          this.toastr.success('Experiencia Agregada', 'FELICITACIONES', {
-            timeOut: 3000, positionClass: 'toast-top-center'});
+    
+    if (this.experienciaForm.get('id')?.value === '') {
+      this.experienciaService.save(experiencia).subscribe({
+        next: (newExperiencia: Experiencia) => {
+          this.toastr.success('Experiencia Agregada', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
+          });
           this.experiencia.push(newExperiencia);
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al guardar la experiencia', 'ERROR');
         }
-      );
-    }else{
-      this.experienciaService.actualizar(id, experiencia).subscribe(
-        ()=>{
-          this.toastr.success('Experiencia Actualizada', 'OK', {
-            timeOut: 3000, positionClass: 'toast-top-center'
+      });
+    } else {
+      this.experienciaService.actualizar(id, experiencia).subscribe({
+        next: () => {
+          this.toastr.success('Experiencia Actualizada', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
           });
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al actualizar la experiencia', 'ERROR');
         }
-      )
-    }
-  }
-  public onNewExp(){
-    this.borrarForm();
-  }
-
-  public editarExperiencia(index: number){
-    let experiencia: Experiencia = this.experiencia[index];
-    this.cargarExperiencia(experiencia);
-  }
-
-  public eliminarExperiencia(index: number){
-    let experiencia: Experiencia = this.experiencia[index];
-     if(confirm("¿Desea eliminar la experiencia selecionado?")){
-      this.experienciaService.eliminar(experiencia.id).subscribe(
-        ()=> {
-          this.toastr.error('Experiencia Eliminado', 'ATENCION!', {
-            timeOut: 3000, positionClass: 'toast-top-center'
-          });
-          this.reloadData();
-        }
-      )
+      });
     }
   }
 
+  eliminarExperiencia(index: number) {
+    let experiencia: Experiencia = this.experiencia[index];
+    if (confirm('¿Desea eliminar la experiencia seleccionada?')) {
+      this.experienciaService.eliminar(experiencia.id).subscribe({
+        next: () => {
+          this.toastr.warning('Experiencia Eliminada', 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
+          });
+          this.reloadData();
+        },
+        error: (error) => {
+          this.toastr.error('Error al eliminar la experiencia', 'ERROR');
+        }
+      });
+    }
+  }
 }

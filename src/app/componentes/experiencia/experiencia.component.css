@@ -1,39 +1,75 @@
-.row{
-    padding: 20px;
+/* experiencia.component.css */
+.experience-section {
+  padding: 24px;
+  background: linear-gradient(179.4deg, rgba(33,150,243,1) 1.8%, rgba(22,255,245,0.60) 97.1%);
+  min-height: auto;
 }
-.but{
-    border-radius: 2rem;
-    margin-top: 5px;
-    margin-right: 5px;
-    font-size: 0.75rem;
+
+.section-header {
+  margin-bottom: 24px;
+  background: rgba(109, 184, 238, 0.9);
+  color: rgb(223, 235, 235);
 }
-#experiencia {
-    /* background-color: #a1b5cb; */
-    /* background: #5DADE2; */
-    background-image: radial-gradient( circle farthest-corner at 92.3% 71.5%,  rgba(83,138,214,1) 0%, rgba(134,231,214,1) 90% );
-    margin: 20px;
-    padding: 20px;
-    border-radius: 10px; 
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+
+.section-header mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-h3,h4 {
-    display: inline;
+
+.experience-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
 }
-li h3 {
-    display: inline;
+
+.experience-card {
+  background: rgba(45, 188, 232, 0.9);
+  transition: transform 0.3s ease;
+  color: aquamarine;
 }
-li{
-    list-style: none;
+
+.experience-card:hover {
+  transform: translateY(-5px);
 }
-p{
-    width: 90%;
-    margin: 10px auto;
+
+.card-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
 }
-#tituloGeneral{
-    display: flex;
-    justify-content: space-between;
+
+.date-range {
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+  font-size: 0.9rem;
 }
-#tituloExperiencia{
-    display: flex;
-    justify-content: space-between;
+
+.description {
+  color: rgba(0, 0, 0, 0.87);
+  line-height: 1.6;
+}
+
+/* Estilos para el diálogo */
+.date-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+::ng-deep .mat-input-element {
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+::ng-deep .mat-form-field-outline {
+  color: rgba(0, 0, 0, 0.38) !important;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
 }

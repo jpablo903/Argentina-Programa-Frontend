@@ -8,8 +8,8 @@ import { Persona } from '../models/persona';
 })
 export class PersonaService {
 
-  personaUrl = "https://backargentinaprograma.herokuapp.com/persona/";
-  // personaUrl = "https://localhost:8080/persona/";
+  personaUrl = "https://portfolio-backend-ev9h.onrender.com/persona/";
+   //personaUrl = "http://localhost:8080/persona/";
   
 
   constructor(private httpClient: HttpClient) { }

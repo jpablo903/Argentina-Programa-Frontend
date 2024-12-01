@@ -8,8 +8,8 @@ import { Proyecto } from '../models/proyecto';
 })
 export class ProyectoService {
 
-  proyectoUrl= "https://backargentinaprograma.herokuapp.com/proyecto/"
-  // proyectoUrl= "https://localhost:8080/proyecto/"
+  proyectoUrl= "https://portfolio-backend-ev9h.onrender.com/proyecto/"
+   //proyectoUrl= "http://localhost:8080/proyecto/"
   
 
   constructor(private httpClient: HttpClient) { }

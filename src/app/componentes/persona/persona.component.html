@@ -1,85 +1,98 @@
-<div id="acercaDePersona" *ngFor="let persona of personas, let i = index">
+<mat-card class="profile-card">
+  <div *ngFor="let persona of personas; let i = index">
     <!-- Banner -->
-    <div >
-        <img id="banner" [src]="persona.urlImagenBanner">
-        <!-- <img id="banner" src="../../../assets/peakpx.jpg"> -->
+    <div class="banner-container">
+      <img [src]="persona.urlImagenBanner" class="banner-image" alt="banner">
     </div>
-        <div class="row"  id="acercaDe" >
-            <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-                <img [src]="persona.urlImagen" id="fotoperfil">
-                <!-- <img src="../../../assets/perfil.jpg" id="fotoperfil"> -->
-            </div>
-                <!-- Nombre y Profesion -->
-                <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2" id="descripcion"  >
-                    <div>
-                        <h3 id="nombreId">{{persona.nombre}} {{persona.apellido}}</h3>
-                    </div>
-                    <div>
-                        <p><b><i>{{persona.profesion}}</i></b></p>
-                    </div>
-                </div>
-                <!-- Acerca De -->
-                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 acercaDe">
-                    <div id="textAcercaDe"  >
-                        <h3><b>Acerca de mi</b></h3>
-                        <div *ngIf="isAdmin">
-                            <!-- Boton de Editar -->
-                                <button type="button" class="btn btn-outline-warning but" data-bs-toggle="modal" data-bs-target="#acercaDeForm"
-                                (click)="editarPersona(i)"><i class="fa-solid fa-pencil"></i></button>
-                                <!-- Boton de Eliminar -->
-                                <button type="button" class="btn btn-outline-danger but"
-                                (click)="eliminarPersona(i)" disabled><i class="fa-solid fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                    <span>
-                        <!-- Texto de Descripcion Acerca De -->
-                        <p id="text-acercade">{{persona.acercaDe}}</p>
-                    </span>
-                </div>
-         </div>
-</div>
 
-    <!-- Modal  Agregar - Editar -->
-<div class="modal fade" id="acercaDeForm" tabindex="-1" aria-labelledby="addExperienciaLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addExpLabel">Acerca De</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-    
-          <form novalidate #f="ngForm" [formGroup]="acercaDeForm" (ngSubmit)="nuevaPersonas(acercaDeForm.value.id)">
-            <input type="hidden" formControlName="id" name="id">
-            <div class="form-group">
-              <label for="text">Nombre</label>
-              <input type="text" name="nombre" formControlName="nombre" class="form-control" id="nombre"
-              placeholder="Nombre">
-              <label for="text">Apellido</label>
-              <input type="text" name="apellido" formControlName="apellido" class="form-control" id="apellido"
-              placeholder="Apellido">
-              <label for="text">Profesion</label>
-              <input type="text" name="profesion" formControlName="profesion" class="form-control" id="profesion"
-              placeholder="Profesion">
-              <label for="text">Acerca De</label>
-              <textarea name="acercaDe" maxlength="255" rows="5" cols="60" placeholder="Breve descripcion" formControlName="acercaDe"
-              class="form-control" id="acercaDe"></textarea>
-              <!-- <input type="text" name="acercaDe" formControlName="acercaDe" class="form-control" id="acercaDe" placeholder="Lugar de trabajo"> -->
-              <label for="text">Foto Perfil</label>
-              <input type="text" name="urlImagen" formControlName="urlImagen" class="form-control form-control-sm" id="urlImagen">
-              <label for="text">Foto Portada</label>
-              <input type="text" name="urlImagenBanner" formControlName="urlImagenBanner" class="form-control form-control-sm" id="urlImagenBanner">
-            </div>
-            <div class="modal-footer justify-content-md-center">
-              <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
-                Guardar
-              </button>
-              <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
-                Cerrar
-              </button>
-            </div>
-          </form>
+    <div class="profile-content">
+      <!-- Foto y Datos Personales -->
+      <div class="profile-header">
+        <mat-card class="profile-image-card">
+          <img [src]="persona.urlImagen" class="profile-image" alt="perfil">
+        </mat-card>
+
+        <div class="profile-info">
+          <h2 class="mat-h1">{{persona.nombre}} {{persona.apellido}}</h2>
+          <h3 class="mat-h2">{{persona.profesion}}</h3>
         </div>
       </div>
+
+      <!-- Acerca De -->
+      <mat-card class="about-section">
+        <mat-card-header>
+          <mat-card-title>Acerca de mí</mat-card-title>
+          <div *ngIf="isAdmin" class="action-buttons">
+            <button mat-icon-button color="primary" (click)="editarPersona(i)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="eliminarPersona(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{persona.acercaDe}}</p>
+        </mat-card-content>
+      </mat-card>
     </div>
   </div>
+</mat-card>
+
+<!-- Dialog para editar -->
+<ng-template #personaDialog>
+  <h2 mat-dialog-title>{{acercaDeForm.get('id')?.value ? 'Editar' : 'Nuevo'}} Perfil</h2>
+  <mat-dialog-content>
+    <form [formGroup]="acercaDeForm">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="nombre">
+        <mat-error *ngIf="acercaDeForm.get('nombre')?.hasError('required')">
+          El nombre es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Apellido</mat-label>
+        <input matInput formControlName="apellido">
+        <mat-error *ngIf="acercaDeForm.get('apellido')?.hasError('required')">
+          El apellido es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Profesión</mat-label>
+        <input matInput formControlName="profesion">
+        <mat-error *ngIf="acercaDeForm.get('profesion')?.hasError('required')">
+          La profesión es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Acerca de mí</mat-label>
+        <textarea matInput formControlName="acercaDe" rows="5"></textarea>
+        <mat-error *ngIf="acercaDeForm.get('acercaDe')?.hasError('required')">
+          La descripción es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>URL Imagen Perfil</mat-label>
+        <input matInput formControlName="urlImagen">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>URL Imagen Banner</mat-label>
+        <input matInput formControlName="urlImagenBanner">
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-raised-button color="primary" 
+            [disabled]="acercaDeForm.invalid"
+            (click)="nuevaPersonas(acercaDeForm.get('id')?.value)">
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</ng-template>

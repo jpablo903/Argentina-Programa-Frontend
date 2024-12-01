@@ -8,15 +8,26 @@ import { PersonaComponent } from './componentes/persona/persona.component';
 import { EstudiosComponent } from './componentes/estudios/estudios.component';
 import { ExperienciaComponent } from './componentes/experiencia/experiencia.component';
 import { ProyectosComponent } from './componentes/proyectos/proyectos.component';
-import { SkillComponent } from './componentes/skill/skill.component';
+import { SkillsComponent } from './componentes/skill/skill.component';
 import { HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { SwiperModule } from 'swiper/angular';
+
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { NgCircleProgressModule } from 'ng-circle-progress';
-import { InterceptProvider } from './interceptors/interceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.component';
 
 
 @NgModule({
@@ -27,7 +38,9 @@ import { InterceptProvider } from './interceptors/interceptor.service';
     EstudiosComponent,
     ExperienciaComponent,
     ProyectosComponent,
-    SkillComponent,
+    SkillsComponent,
+    LoginDialogComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -38,9 +51,23 @@ import { InterceptProvider } from './interceptors/interceptor.service';
     ToastrModule.forRoot(),
     HttpClientModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    SwiperModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDialogModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
-  providers: [InterceptProvider],
+  providers: [
+    { 
+      provide: HTTP_INTERCEPTORS, 
+      useClass: AuthInterceptor, 
+      multi: true 
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

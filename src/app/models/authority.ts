@@ -1,0 +1,3 @@
+interface Authority {
+    authority: string;
+}

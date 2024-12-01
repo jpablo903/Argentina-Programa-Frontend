@@ -1,80 +1,74 @@
-.container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.redes{
-    margin-right: 0.5em;
-    display: flex;
-}
-.modalBoton{
-    /* width: -webkit-fill-available; */
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-.modal-footer{
-    justify-content: center;
-}
-.btn{
-    margin-right: 5px;
-    border-width: 2px;
-}.alert{
-    margin: 0px 35px 25px 35px;
-}
-p{
-    margin-left: 20%;
-    font-size: 18px;
-}
-img{
-    width: 40px;
-    padding-right: 5px;
+.nav-toolbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-image: linear-gradient(to right, rgba(33,150,243,1), rgba(22,255,245,0.60));
+  height: 64px;
 }
 
-#logo {
-    width: 180px;
-    margin-bottom: -20px;
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+  height: 100%;
 }
 
-#nav{
-    background: #5DADE2;
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-}
-@media (max-width: 575px){
-    .container{
-        flex-direction: column;
-    }
-    .redes{
-        display: flex;
-        padding-bottom: 5px;
-    }
-    .info{
-        top: 50%;
-        position: absolute;
-        /* text-align: center; */
-        left: 10%;
-    }
-    
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-/* codigo de presentacion */
-#presentacion{
-    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    justify-content: center;
-    margin-top: 20px;
-}
-#ologger{
-    text-align: center;
-}
-.info{
-    top: 85%;
-    position: absolute;
-    text-align: center;
-    left: 35%;
+.logo {
+  height: 40px;
+  filter: brightness(0) invert(1); /* Hace el logo blanco */
 }
 
-h1{
-    justify-content: center;
-    text-align: center;
-    /* width: 100%; */
-    margin: 0px 25px 0px 25px;
+.program-text {
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.actions-section {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.social-links {
+  display: flex;
+  gap: 12px;
+}
+
+.social-links a {
+  color: white;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.social-links a:hover {
+  opacity: 1;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Estilos para el botón de login */
+::ng-deep .mat-raised-button {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Ajuste para el contenido debajo del navbar */
+:host + * {
+  margin-top: 64px;
 }

@@ -1,197 +1,48 @@
-<div class="row" id="nav">
+<mat-toolbar color="primary" class="nav-toolbar">
   <div class="container">
-      <div class="logo">
-          <img src="../../../assets/APLogo.png" id="logo"> 
-          <p><strong><i>#YoProgramo</i></strong></p>
+    <div class="toolbar-content">
+      <!-- Logo -->
+      <div class="logo-section">
+        <img src="../../../assets/APLogo.png" alt="Logo" class="logo">
+        <span class="program-text">#YoProgramo</span>
       </div>
-      <div class="redes">
-           <a href="https://web.facebook.com/juanpa.r.904/" target="_blank"><img src="../../../assets/facebook-brands.svg" alt=""></a>
-           <a href=""><img src="../../../assets/instagram-square-brands.svg" target="_blank"></a>
-           <a href="https://twitter.com/JuanPab57989868" target="_blank"><img src="../../../assets/twitter-brands.svg"></a>
-           <a href="https://github.com/jpablo903" target="_blank"><img src="../../../assets/git-alt-brands.svg"></a>
-           <a href="https://www.linkedin.com/in/juan-pablo-rajoy-93406a11b/" target="_blank"><img src="../../../assets/linkedin-brands.svg" alt=""></a>
 
-            <div>
-              <div  *ngIf="!isLogged">
-                <button type="button" class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#iniciarSesion">
-                  <i class="fas fa-sign-in-alt"></i> Ingresar</button>
-              </div>
-              <div *ngIf="isLogged" (click)="onLogOut()">
-                <button type="button" class="btn btn-outline-danger" data-toggle="modal"><i class="fa-solid fa-door-open"></i> Salir</button>
-              </div>
-            </div>
-      </div>        
-  </div>
-</div>
+      <!-- Redes sociales y Login -->
+      <div class="actions-section">
+        <!-- Redes Sociales -->
+        <div class="social-links">
+          <a mat-icon-button href="https://web.facebook.com/juanpa.r.904/" target="_blank">
+            <mat-icon svgIcon="facebook"></mat-icon>
+          </a>
+          <a mat-icon-button href="https://twitter.com/JuanPab57989868" target="_blank">
+            <mat-icon svgIcon="twitter"></mat-icon>
+          </a>
+          <a mat-icon-button href="https://github.com/jpablo903" target="_blank">
+            <mat-icon svgIcon="github"></mat-icon>
+          </a>
+          <a mat-icon-button href="https://www.linkedin.com/in/juan-pablo-rajoy-93406a11b/" target="_blank">
+            <mat-icon svgIcon="linkedin"></mat-icon>
+          </a>
+        </div>
 
-<div class="container" *ngIf="!isLogged" id="presentacion">
-  <div>
-    <h1>Bienvenidos al porfolio de Juan Pablo Rajoy</h1>
-    <h6 id="ologger">Debe estar logeado para visualizar el contenido</h6>
-    <!-- <h6 class="info">Para ingresar por favor utilice la siguiente cuenta. <br> -->
-      <!-- <i> Usuario: "user" </i> <br> -->
-     <!-- <i> Contraseña: "123456" </i>  -->
-    <!-- </h6> -->
-  
-    </div>
-</div>
-<!-- Modal Ingreso  -->
-<div class="modal" tabindex="-1" id="iniciarSesion">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">INICIAR SESION</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <!-- <div class="container"> -->
-              <div class="row">
-                <div class="card-header">
-                  <ul class="nav nav-tabs">
-                      <li class="nav-item">
-                        <a class="nav-link active" routerLink="/">Iniciar Sesión</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" routerLink="/registrar" data-bs-toggle="modal" data-bs-target="#registrar"
-                        (click)="onNewRegistro()" >Crear Cuenta</a>
-                      </li>
-                    </ul>
-              </div>
-                  <div class="col-md-8 mx-auto">
-                    
-                      <form #f="ngForm" [formGroup]="loginForm" (ngSubmit)="onLogin()" novalidate >
-                          <div class="form-group">
-                              <label for="nombreUsuario">Nombre Usuario</label>
-                              <input type="text" class="form-control" formControlName="nombreUsuario" id="nombreUsuario" name="nombreUsuario"
-                              [(ngModel)]="nombreUsuario" required
-                              [ngClass]="{'is-invalid': nombreUsuarioValidoL?.errors && nombreUsuarioValidoL?.touched, 'is-valid': !nombreUsuarioValidoL?.errors && !nombreUsuarioValidoL?.touched}">
-                              <div *ngIf="nombreUsuarioValidoL?.errors && nombreUsuarioValidoL?.touched">
-                                <span *ngIf="nombreUsuarioValidoL?.hasError('required')" class="text-danger">
-                                  Debe ingresar el nombre de usuario.
-                                </span>
-                                <span *ngIf="nombreUsuarioValidoL?.errors?.['minlength']" class="text-danger">
-                                  El nombre de usuario debe tener al menos 4 caracteres.
-                                </span>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                             <label for="password">Contraseña</label>
-                             <input type="password" name="password" formControlName="password" id="password" class="form-control"
-                             [(ngModel)]="password" required
-                             [ngClass]="{'is-invalid': passValidoL?.errors && passValidoL?.touched, 'is-valid': !passValidoL?.errors && !passValidoL?.touched}">
-                             <div *ngIf="passValidoL?.errors && passValidoL?.touched">
-                              <span *ngIf="passValidoL?.hasError('required')" class="text-danger">
-                                La contraseña es requerida.
-                              </span>
-                              <span *ngIf="passValidoL?.errors?.['minlength']" class="text-danger">
-                                La constraseña debe tener al menos 6 caracteres.
-                              </span>
-                            </div>
-                          </div>
-                          <button class="btn btn-outline-success btn-block modalBoton" [disabled]="!f.valid" routerLink="/">
-                            <i class="fas fa-sign-in-alt"></i> Iniciar Sesión</button>
-                      </form>
-                  </div>
-              </div>
-          <!-- </div> -->
-      </div>
-      <div class="modal-footer">
-        <!-- <div  *ngIf="f.submitted && isLoginFail" class="alert alert-danger d-flex align-items-center" role="alert"> -->
-          <!-- <div><i class="fa-solid fa-triangle-exclamation"></i>  -->
-            <!-- Usuario o Contraseña incorrecto. -->
-          <!-- </div> -->
+        <!-- Login/Logout -->
+        <div class="auth-buttons">
+          <button *ngIf="!isLogged" 
+                  mat-raised-button 
+                  color="primary" 
+                  (click)="openLogin()">
+            <mat-icon>login</mat-icon>
+            Login
+          </button>
+          <button *ngIf="isLogged" 
+                  mat-raised-button 
+                  color="warn"
+                  (click)="onLogOut()">
+            <mat-icon>logout</mat-icon>
+            Salir
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- --------------------------------------------------------------------------------------------------------------------------------- -->
-<!-- Modal Registro -->
-<div class="modal" tabindex="-1" id="registrar">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">REGISTRARSE</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <!-- <div class="container"> -->
-              <div class="row">
-                <div class="card-header">
-                  <ul class="nav nav-tabs">
-                      <li class="nav-item">
-                        <a class="nav-link" (click)="onNewRegistro()" routerLink="/"data-bs-toggle="modal" data-bs-target="#iniciarSesion">Iniciar Sesión</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link active" routerLink="/" >Crear Cuenta</a>
-                      </li>
-                    </ul>
-              </div>
-                  <div class="col-md-8 mx-auto">
-                    
-                      <form novalidate #f="ngForm" [formGroup]="registerForm" (ngSubmit)="onRegister()" >
-                          <div class="form-group">
-                              <label for="nombre">Nombre</label>
-                              <input type="text" class="form-control" formControlName="nombre" id="nombre" name="nombre"
-                              [(ngModel)]="nombre" required 
-                              [ngClass]="{'is-invalid': nombreValido?.errors && nombreValido?.touched, 'is-valid': !nombreValido?.errors && !nombreValido?.touched}">
-                              <div *ngIf="nombreValido?.errors && nombreValido?.touched">
-                                <span *ngIf="nombreValido?.hasError('required')" class="text-danger">
-                                  El nombre es requerido.
-                                </span>
-                              </div>
-                          </div>
-                          <div class="form-group">
-                            <label for="nombreUsuario">Nombre Usuario</label>
-                            <input type="text" class="form-control" formControlName="nombreUsuario" id="nombreUsuario" name="nombreUsuario"
-                            [(ngModel)]="nombreUsuario" required 
-                            [ngClass]="{'is-invalid': nombreUsuarioValido?.errors && nombreUsuarioValido?.touched, 'is-valid': !nombreUsuarioValido?.errors && !nombreUsuarioValido?.touched}">
-                            <div *ngIf="nombreUsuarioValido?.errors && nombreUsuarioValido?.touched">
-                              <span *ngIf="nombreUsuarioValido?.hasError('required')" class="text-danger">
-                                El nombre de usuario es requerido.
-                              </span>
-                              <span *ngIf="nombreUsuarioValido?.errors?.['minlength']" class="text-danger">
-                                El nombre de usuario debe tener al menos 4 caracteres.
-                              </span>
-                            </div>
-                          </div>
-                          <div class="form-group">
-                             <label for="password">Contraseña</label>
-                             <input type="password" name="password" formControlName="password" id="password" class="form-control"
-                             [(ngModel)]="password" required 
-                             [ngClass]="{'is-invalid': passValido?.errors && passValido?.touched, 'is-valid': !passValido?.errors && !passValido?.touched}">
-                              <div *ngIf="passValido?.errors && passValido?.touched">
-                               <span *ngIf="passValido?.hasError('required')" class="text-danger">
-                                 La contraseña es requerida.
-                               </span>
-                               <span *ngIf="passValido?.errors?.['minlength']" class="text-danger">
-                                 La constraseña debe tener al menos 6 caracteres.
-                               </span>
-                              </div>
-                            </div>
-                          <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" formControlName="email" id="email" name="email"
-                            [(ngModel)]="email" required 
-                            [ngClass]="{'is-invalid': emailValido?.errors && emailValido?.touched, 'is-valid': !emailValido?.errors && !emailValido?.touched}">
-                            <div *ngIf="emailValido?.errors && emailValido?.touched">
-                              <span *ngIf="emailValido?.hasError('required')" class="text-danger">
-                                El email es requerido.
-                              </span>
-                              <span *ngIf="emailValido?.hasError('email')" class="text-danger">
-                                El formate de email debe ser valido.
-                              </span>
-                            </div>
-                        </div>
-                            <button class="btn btn-outline-secondary btn-block modalBoton" [disabled]="!f.valid">
-                              <i class="fa-solid fa-square-plus"></i> Crear Cuenta</button>
-                      </form>
-                  </div>
-              </div>
-          <!-- </div> -->
-      </div>
-      <div class="modal-footer">
-        <h5></h5>
-      </div>
-    </div>
-  </div>
-</div>
+</mat-toolbar>

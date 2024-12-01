@@ -1,0 +1,33 @@
+<!-- login-dialog.component.html -->
+<div class="login-container">
+  <h2 mat-dialog-title>Admin Login</h2>
+  <mat-dialog-content>
+    <form [formGroup]="loginForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Usuario Admin</mat-label>
+        <input matInput formControlName="nombreUsuario" placeholder="Ingrese usuario">
+        <mat-error *ngIf="loginForm.get('nombreUsuario')?.hasError('required')">
+          Usuario requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" placeholder="Ingrese contraseña">
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Contraseña requerida
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false">
+      Cancelar
+    </button>
+    <button mat-raised-button 
+            [disabled]="loginForm.invalid"
+            (click)="onSubmit()">
+      Iniciar Sesión
+    </button>
+  </mat-dialog-actions>
+</div>

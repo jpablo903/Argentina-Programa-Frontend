@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Proyecto } from 'src/app/models/proyecto';
 import { ProyectoService } from 'src/app/servicios/proyecto.service';
-import { TokenService } from 'src/app/servicios/token.service';
+import { AuthStateService } from 'src/app/shared/auth-state.service';
 
 @Component({
   selector: 'app-proyectos',
@@ -11,118 +12,143 @@ import { TokenService } from 'src/app/servicios/token.service';
   styleUrls: ['./proyectos.component.css']
 })
 export class ProyectosComponent implements OnInit {
-
+  @ViewChild('proyectoDialog') proyectoDialog!: TemplateRef<any>;
   public proyectos: Proyecto[] = [];
   proyectoForm: FormGroup;
-  message:'' = "";
-  roles: string[] = [];
   isAdmin: boolean = false;
-  isLogged = false;
+  private dialogRef: MatDialogRef<any> | null = null;
 
   constructor(
     private proyectoService: ProyectoService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
-    private tokenService: TokenService
-    ) {
-      this.proyectoForm = this.formBuilder.group({
-        id:[''],
-        nombreProyecto:['', [Validators.required, Validators.minLength(4)]],
-        descripcion:['', [Validators.required, Validators.minLength(50), Validators.maxLength(255)]],
-        urlImagen:['', [Validators.required]],
-        urlProyecto:['', [Validators.required]]
-      })
-     }
+    private authStateService: AuthStateService,
+    private dialog: MatDialog
+  ) {
+    this.proyectoForm = this.formBuilder.group({
+      id: [''],
+      nombreProyecto: ['', [Validators.required]],
+      descripcion: ['', [Validators.required]],
+      urlProyecto: ['', [Validators.required]],
+      urlImagen: ['', [Validators.required]]
+    });
+
+    this.authStateService.isAdmin$.subscribe(
+      isAdmin => this.isAdmin = isAdmin
+    );
+  }
 
   ngOnInit() {
     this.reloadData();
-
-    if(this.tokenService.getToken()){
-      this.isLogged = true;
-    }else {
-      this.isLogged = false;
-    }
-
-    this.roles = this.tokenService.getAuthorities();
-    this.roles.forEach( role => {
-      if(role === 'ROLE_ADMIN') {
-        this.isAdmin = true;
-        }
-      })
-
   }
 
-  public reloadData(){
+  private reloadData() {
     this.proyectoService.lista().subscribe(
-      (data)=>{
+      (data) => {
         this.proyectos = data;
       }
-    )
+    );
+  }
+
+  onNewProyecto() {
+    this.borrarForm();
+    this.openProyectoDialog();
+  }
+
+  editarProyecto(index: number) {
+    let proyecto: Proyecto = this.proyectos[index];
+    this.cargarProyecto(proyecto);
+    this.openProyectoDialog();
+  }
+
+  private openProyectoDialog() {
+    if (this.dialogRef) return;
+
+    this.dialogRef = this.dialog.open(this.proyectoDialog, {
+      width: '500px',
+      disableClose: true,
+      autoFocus: true,
+      panelClass: ['mat-typography']
+    });
+
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.dialogRef = null;
+    });
   }
 
   private borrarForm() {
-    this.proyectoForm.setValue({
+    this.proyectoForm.reset();
+    this.proyectoForm.patchValue({
       id: '',
-      nombreProyecto:'',
-      descripcion:'',
-      urlImagen:'',
-      urlProyecto:''
+      nombreProyecto: '',
+      descripcion: '',
+      urlProyecto: '',
+      urlImagen: ''
     });
   }
 
-  private cargarProyecto(proyectos: Proyecto) {
-    this.proyectoForm.setValue({
-      id: proyectos.id,
-      nombreProyecto: proyectos.nombreProyecto,
-      descripcion: proyectos.descripcion,
-      urlImagen: proyectos.urlImagen,
-      urlProyecto: proyectos.urlProyecto 
-      
+  private cargarProyecto(proyecto: Proyecto) {
+    this.proyectoForm.patchValue({
+      id: proyecto.id,
+      nombreProyecto: proyecto.nombreProyecto,
+      descripcion: proyecto.descripcion,
+      urlProyecto: proyecto.urlProyecto,
+      urlImagen: proyecto.urlImagen
     });
   }
 
-  nuevoProyecto(id: number){
-    let proyectos: Proyecto = this.proyectoForm.value;
-    if(this.proyectoForm.get('id')?.value == ''){
-      this.proyectoService.save(proyectos).subscribe(
-        (newProyecto: Proyecto) =>{
-          this.toastr.success('Proyecto Agregado', 'FELICITACIONES', {
-            timeOut: 3000, positionClass: 'toast-top-center'});
+  nuevoProyecto(id: number) {
+    if (this.proyectoForm.invalid) return;
+
+    let proyecto: Proyecto = this.proyectoForm.value;
+    
+    if (this.proyectoForm.get('id')?.value === '') {
+      this.proyectoService.save(proyecto).subscribe({
+        next: (newProyecto: Proyecto) => {
+          this.toastr.success('Proyecto Agregado', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
+          });
           this.proyectos.push(newProyecto);
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al guardar el proyecto', 'ERROR');
         }
-      );
-    }else{
-      this.proyectoService.actualizar(id, proyectos).subscribe(
-        ()=>{
-          this.toastr.success('Proyecto Actualizado', 'OK', {
-            timeOut: 3000, positionClass: 'toast-top-center'
+      });
+    } else {
+      this.proyectoService.actualizar(id, proyecto).subscribe({
+        next: () => {
+          this.toastr.success('Proyecto Actualizado', 'ÉXITO', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
           });
           this.reloadData();
+          this.dialogRef?.close();
+        },
+        error: (error) => {
+          this.toastr.error('Error al actualizar el proyecto', 'ERROR');
         }
-      )
-    }
-  }
-  public onNewProyecto(){
-    this.borrarForm();
-  }
-  public editarProyecto(index: number){
-    let proyectos: Proyecto = this.proyectos[index];
-    this.cargarProyecto(proyectos);
-  }
-  public eliminarProyecto(index: number){
-    let proyectos: Proyecto = this.proyectos[index];
-     if(confirm("¿Desea eliminar el Proyecto selecionado?")){
-      this.proyectoService.eliminar(proyectos.id).subscribe(
-        ()=> {
-          this.toastr.error('Proyecto Eliminado', 'ATENCION!', {
-            timeOut: 3000, positionClass: 'toast-top-center'
-          });
-          this.reloadData();
-        }
-      )
+      });
     }
   }
 
-
+  eliminarProyecto(index: number) {
+    let proyecto: Proyecto = this.proyectos[index];
+    if (confirm('¿Desea eliminar el proyecto seleccionado?')) {
+      this.proyectoService.eliminar(proyecto.id).subscribe({
+        next: () => {
+          this.toastr.warning('Proyecto Eliminado', 'OK', {
+            timeOut: 3000,
+            positionClass: 'toast-top-center'
+          });
+          this.reloadData();
+        },
+        error: (error) => {
+          this.toastr.error('Error al eliminar el proyecto', 'ERROR');
+        }
+      });
+    }
+  }
 }

@@ -1,73 +1,93 @@
-<div class="row" *ngIf="isLogged">
-    <div id="titulo">
-        <h2>Proyectos Realizados</h2>
-        <div *ngIf="isAdmin">
-            <button type="button" class="btn btn-outline-primary but"
-            data-bs-toggle="modal" data-bs-target="#proyectoModal" (click)="onNewProyecto()">
-            <i class="fa-solid fa-plus"></i></button>
+<div class="projects-section">
+  <!-- Encabezado -->
+  <mat-card class="section-header">
+    <mat-card-header>
+      <mat-card-title>Proyectos</mat-card-title>
+      <div *ngIf="isAdmin" class="header-actions">
+        <button mat-fab color="primary" (click)="onNewProyecto()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+  </mat-card>
+
+  <!-- Lista de Proyectos -->
+  <div class="projects-grid">
+    <mat-card class="project-card" *ngFor="let proyecto of proyectos; let i = index">
+      <img mat-card-image [src]="proyecto.urlImagen" [alt]="proyecto.nombreProyecto" class="project-image">
+      
+      <mat-card-header>
+        <mat-card-title>{{proyecto.nombreProyecto}}</mat-card-title>
+        <div *ngIf="isAdmin" class="card-actions">
+          <button mat-icon-button color="primary" (click)="editarProyecto(i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="eliminarProyecto(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
-    </div>
-    
-    <div class="container" *ngFor="let proyecto of proyectos, let i = index">
-        <div class="col-sm-12 col-md-7 col-lg-7 parte1">
-            <h4>{{proyecto.nombreProyecto}}</h4>
-            
-            <div id="buttones" *ngIf="isAdmin">
-                <button type="button" class="btn btn-outline-warning but" data-bs-toggle="modal" data-bs-target="#proyectoModal"
-                (click)="editarProyecto(i)"><i class="fa-solid fa-pencil"></i></button>
-                <!-- Boton de Eliminar -->
-                <button type="button" class="btn btn-outline-danger but"
-                (click)="eliminarProyecto(i)"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-        </div>
-        <div id="contenido">
-            <p>{{proyecto.descripcion}} <a [href]="proyecto.urlProyecto" target="_blank"><i class="fa-solid fa-eye"></i></a> </p>
-            <div class="col-sm-12 col-md-3 col-lg-3 offset-md-1 offset-lg-1 parte2">
-                <!-- <img src="../../../assets/proyecto-uno.png" class="img-fluid img-proyecto"> -->
-                <img [src]="proyecto.urlImagen" class="img-fluid img-proyecto">
-            </div>
-        </div>
-    </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>{{proyecto.descripcion}}</p>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <a mat-button [href]="proyecto.urlProyecto" target="_blank" color="primary">
+          <mat-icon>launch</mat-icon>
+          Ver Repositorio
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
 
- <!-- Modal  Agregar - Editar -->
- <div class="modal fade" id="proyectoModal" tabindex="-1" aria-labelledby="addProyectoLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addExpLabel">--Proyecto--</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-    
-          <form novalidate #f="ngForm" [formGroup]="proyectoForm" (ngSubmit)="nuevoProyecto(proyectoForm.value.id)">
-            <input type="hidden" formControlName="id" name="id">
-            <div class="form-group">
-              <label for="text">Nombre</label>
-              <input type="text" name="nombreProyecto" formControlName="nombreProyecto" class="form-control" id="nombreProyecto"
-              placeholder="Nombre Proyecto">
-              <label for="text">Descripcion</label>
-              <textarea name="descripcion" maxlength="255" rows="5" cols="60" placeholder="Breve descripcion" formControlName="descripcion"
-               class="form-control" id="descripcion"></textarea>
-              <!-- <input type="text" name="descripcion" formControlName="descripcion" class="form-control" id="descripcion" -->
-              <!-- placeholder="Breve descripcion"> -->
-              <label for="text">Url Imagen</label>
-              <input type="text" name="urlImagen" formControlName="urlImagen" class="form-control form-control-sm"id="urlImagen"
-              placeholder="Ingreses una ruta de web para subir la imagen.">
-              <label for="text">Url Proyecto</label>
-              <input type="text" name="urlProyecto" formControlName="urlProyecto" class="form-control form-control-sm"id="urlProyecto"
-              placeholder="url del proyecto">
-            </div>
-            <div class="modal-footer justify-content-md-center">
-              <button [disabled]="!f.valid" type="submit" class="btn btn-outline-success" data-bs-dismiss="modal">
-                Guardar
-              </button>
-              <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">
-                Cerrar
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- Dialog para agregar/editar -->
+<ng-template #proyectoDialog>
+  <h2 mat-dialog-title>{{proyectoForm.get('id')?.value ? 'Editar' : 'Nuevo'}} Proyecto</h2>
+  <mat-dialog-content>
+    <form [formGroup]="proyectoForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del Proyecto</mat-label>
+        <input matInput formControlName="nombreProyecto">
+        <mat-error *ngIf="proyectoForm.get('nombreProyecto')?.hasError('required')">
+          El nombre es requerido
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>URL del Proyecto</mat-label>
+        <input matInput formControlName="urlProyecto">
+        <mat-error *ngIf="proyectoForm.get('urlProyecto')?.hasError('required')">
+          La URL es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>URL de la Imagen</mat-label>
+        <input matInput formControlName="urlImagen">
+        <mat-error *ngIf="proyectoForm.get('urlImagen')?.hasError('required')">
+          La URL de la imagen es requerida
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="descripcion" rows="4"></textarea>
+        <mat-error *ngIf="proyectoForm.get('descripcion')?.hasError('required')">
+          La descripción es requerida
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">
+      Cancelar
+    </button>
+    <button mat-raised-button color="primary"
+            [disabled]="proyectoForm.invalid"
+            (click)="nuevoProyecto(proyectoForm.get('id')?.value)">
+      Guardar
+    </button>
+  </mat-dialog-actions>
+</ng-template>
