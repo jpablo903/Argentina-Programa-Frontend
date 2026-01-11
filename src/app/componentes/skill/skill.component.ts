@@ -5,14 +5,12 @@ import { ToastrService } from 'ngx-toastr';
 import { Skill } from 'src/app/models/skill';
 import { SkillService } from 'src/app/servicios/skill.service';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
-import SwiperCore, { Navigation, Pagination, SwiperOptions } from 'swiper';
-
-SwiperCore.use([Navigation, Pagination]);
 
 @Component({
   selector: 'app-skills',
   templateUrl: './skills.component.html',
-  styleUrls: ['./skills.component.css']
+  styleUrls: ['./skills.component.css'],
+  standalone: false
 })
 export class SkillsComponent implements OnInit {
   @ViewChild('skillDialog') skillDialog!: TemplateRef<any>;
@@ -20,27 +18,6 @@ export class SkillsComponent implements OnInit {
   skillForm: FormGroup;
   isAdmin: boolean = false;
   private dialogRef: MatDialogRef<any> | null = null;
-
-  swiperConfig: SwiperOptions = {
-    slidesPerView: 3,
-    spaceBetween: 30,
-    navigation: true,
-    pagination: { clickable: true },
-    breakpoints: {
-      0: {
-        slidesPerView: 1,
-        spaceBetween: 20
-      },
-      768: {
-        slidesPerView: 2,
-        spaceBetween: 30
-      },
-      1024: {
-        slidesPerView: 3,
-        spaceBetween: 30
-      }
-    }
-  };
 
   constructor(
     private skillService: SkillService,
@@ -119,7 +96,7 @@ export class SkillsComponent implements OnInit {
     if (this.skillForm.invalid) return;
 
     let skill: Skill = this.skillForm.value;
-    
+
     if (this.skillForm.get('id')?.value === '') {
       this.skillService.save(skill).subscribe({
         next: (newSkill: Skill) => {

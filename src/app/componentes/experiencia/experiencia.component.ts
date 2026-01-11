@@ -7,9 +7,10 @@ import { ExperienciaService } from 'src/app/servicios/experiencia.service';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
 
 @Component({
-  selector: 'app-experiencia',
-  templateUrl: './experiencia.component.html',
-  styleUrls: ['./experiencia.component.css']
+    selector: 'app-experiencia',
+    templateUrl: './experiencia.component.html',
+    styleUrls: ['./experiencia.component.css'],
+    standalone: false
 })
 export class ExperienciaComponent implements OnInit {
   @ViewChild('experienciaDialog') experienciaDialog!: TemplateRef<any>;
@@ -104,7 +105,7 @@ export class ExperienciaComponent implements OnInit {
     if (this.experienciaForm.invalid) return;
 
     let experiencia: Experiencia = this.experienciaForm.value;
-    
+
     if (this.experienciaForm.get('id')?.value === '') {
       this.experienciaService.save(experiencia).subscribe({
         next: (newExperiencia: Experiencia) => {

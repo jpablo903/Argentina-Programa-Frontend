@@ -7,9 +7,10 @@ import { EstudiosService } from 'src/app/servicios/estudios.service';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
 
 @Component({
-  selector: 'app-estudios',
-  templateUrl: './estudios.component.html',
-  styleUrls: ['./estudios.component.css']
+    selector: 'app-estudios',
+    templateUrl: './estudios.component.html',
+    styleUrls: ['./estudios.component.css'],
+    standalone: false
 })
 export class EstudiosComponent implements OnInit {
   @ViewChild('estudioDialog') estudioDialog!: TemplateRef<any>;
@@ -107,7 +108,7 @@ export class EstudiosComponent implements OnInit {
     if (this.estudioForm.invalid) return;
 
     let estudio: Estudios = this.estudioForm.value;
-    
+
     if (this.estudioForm.get('id')?.value === '') {
       this.estudiosService.save(estudio).subscribe({
         next: (newEstudio: Estudios) => {

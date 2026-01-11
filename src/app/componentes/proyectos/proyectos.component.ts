@@ -7,9 +7,10 @@ import { ProyectoService } from 'src/app/servicios/proyecto.service';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
 
 @Component({
-  selector: 'app-proyectos',
-  templateUrl: './proyectos.component.html',
-  styleUrls: ['./proyectos.component.css']
+    selector: 'app-proyectos',
+    templateUrl: './proyectos.component.html',
+    styleUrls: ['./proyectos.component.css'],
+    standalone: false
 })
 export class ProyectosComponent implements OnInit {
   @ViewChild('proyectoDialog') proyectoDialog!: TemplateRef<any>;
@@ -101,7 +102,7 @@ export class ProyectosComponent implements OnInit {
     if (this.proyectoForm.invalid) return;
 
     let proyecto: Proyecto = this.proyectoForm.value;
-    
+
     if (this.proyectoForm.get('id')?.value === '') {
       this.proyectoService.save(proyecto).subscribe({
         next: (newProyecto: Proyecto) => {

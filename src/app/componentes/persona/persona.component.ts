@@ -8,9 +8,10 @@ import { AuthStateService } from 'src/app/shared/auth-state.service';
 declare var window: any;
 
 @Component({
-  selector: 'app-persona',
-  templateUrl: './persona.component.html',
-  styleUrls: ['./persona.component.css']
+    selector: 'app-persona',
+    templateUrl: './persona.component.html',
+    styleUrls: ['./persona.component.css'],
+    standalone: false
 })
 export class PersonaComponent implements OnInit {
   @ViewChild('personaDialog') personaDialog!: TemplateRef<any>;
@@ -26,13 +27,13 @@ export class PersonaComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.acercaDeForm = this.formBuilder.group({
-      id:[''],
-      nombre:['', [Validators.required]],
-      apellido:['', [Validators.required]],
-      profesion:['', [Validators.required]],
-      acercaDe:['', [Validators.required, Validators.maxLength(255)]],
-      urlImagen:['', [Validators.required]],
-      urlImagenBanner:['',[Validators.required]]
+      id: [''],
+      nombre: ['', [Validators.required]],
+      apellido: ['', [Validators.required]],
+      profesion: ['', [Validators.required]],
+      acercaDe: ['', [Validators.required, Validators.maxLength(255)]],
+      urlImagen: ['', [Validators.required]],
+      urlImagenBanner: ['', [Validators.required]]
     });
     this.authStateService.isAdmin$.subscribe(
       isAdmin => this.isAdmin = isAdmin
@@ -43,7 +44,7 @@ export class PersonaComponent implements OnInit {
     this.reloadData();
   }
 
-  private reloadData(){
+  private reloadData() {
     this.personaService.lista().subscribe(
       (data) => {
         this.personas = data;
@@ -55,12 +56,12 @@ export class PersonaComponent implements OnInit {
     this.acercaDeForm.reset();
     this.acercaDeForm.patchValue({
       id: '',
-      nombre:'',
-      apellido:'',
-      profesion:'',
-      acercaDe:'',
-      urlImagen:'',
-      urlImagenBanner:''
+      nombre: '',
+      apellido: '',
+      profesion: '',
+      acercaDe: '',
+      urlImagen: '',
+      urlImagenBanner: ''
     });
   }
 
@@ -76,9 +77,9 @@ export class PersonaComponent implements OnInit {
     });
   }
 
-  nuevaPersonas(id: number){
+  nuevaPersonas(id: number) {
     let personas: Persona = this.acercaDeForm.value;
-    if(this.acercaDeForm.get('id')?.value == ''){
+    if (this.acercaDeForm.get('id')?.value == '') {
       this.personaService.save(personas).subscribe({
         next: (newPersonas: Persona) => {
           this.toastr.success('Datos Agregados', 'FELICITACIONES', {
@@ -108,17 +109,17 @@ export class PersonaComponent implements OnInit {
     }
   }
 
-  onNewPersona(){
+  onNewPersona() {
     this.borrarForm();
     this.dialog.open(this.personaDialog, {
       width: '600px',
       disableClose: true,
       autoFocus: true,
-    panelClass: ['mat-typography']
+      panelClass: ['mat-typography']
     });
   }
 
-  editarPersona(index: number){
+  editarPersona(index: number) {
     let personas: Persona = this.personas[index];
     this.cargarPersona(personas);
     this.dialog.open(this.personaDialog, {
@@ -126,9 +127,9 @@ export class PersonaComponent implements OnInit {
     });
   }
 
-  public eliminarPersona(index: number){
+  public eliminarPersona(index: number) {
     let personas: Persona = this.personas[index];
-    if(confirm("¿Desea eliminar la persona seleccionada?")){
+    if (confirm("¿Desea eliminar la persona seleccionada?")) {
       this.personaService.eliminar(personas.id).subscribe({
         next: () => {
           this.toastr.error('Persona Eliminada', 'ATENCIÓN!', {

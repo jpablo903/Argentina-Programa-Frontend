@@ -1,55 +1,52 @@
 /* Estilos comunes para todos los modales */
 .modal-dialog {
-    padding: 20px;
-    background-color: white;
-  }
-  
-  /* Estilo para campos de formulario */
-  .mat-form-field {
-    width: 100%;
-    margin-bottom: 16px;
-  }
-  
-  /* Estilos para botones */
-  .mat-dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    padding: 16px 0;
-    margin-top: 16px;
-  }
-  
-  /* Botón Cancelar */
-  .mat-dialog-actions button[mat-button] {
-    color: #dc3545;
-    font-weight: 500;
-  }
-  
-  /* Botón Guardar */
-  .mat-dialog-actions button[mat-raised-button] {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  /* Título del modal */
-  .mat-dialog-title {
-    color: #1976d2;
-    margin-bottom: 20px !important;
-  }
-  
-  /* Campos de formulario */
-  ::ng-deep .mat-form-field-label {
-    color: rgba(0, 0, 0, 0.6) !important;
-  }
-  
-  ::ng-deep .mat-form-field-outline {
-    color: rgba(0, 0, 0, 0.12) !important;
-  }
+  padding: 20px;
+  background-color: white;
+}
 
-  .section-spacing {
-    margin-bottom: 2rem; /* o el valor que prefieras */
-  }
+/* Estilo para campos de formulario */
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
 
-@import 'swiper/css';
-@import 'swiper/css/navigation';
-@import 'swiper/css/pagination';
+/* Estilos para botones */
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 0;
+  margin-top: 16px;
+}
+
+/* Botón Cancelar */
+.mat-dialog-actions button[mat-button] {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+/* Botón Guardar */
+.mat-dialog-actions button[mat-raised-button] {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Título del modal */
+.mat-dialog-title {
+  color: #1976d2;
+  margin-bottom: 20px !important;
+}
+
+/* Campos de formulario */
+::ng-deep .mat-form-field-label {
+  color: rgba(0, 0, 0, 0.6) !important;
+}
+
+::ng-deep .mat-form-field-outline {
+  color: rgba(0, 0, 0, 0.12) !important;
+}
+
+.section-spacing {
+  margin-bottom: 2rem;
+  /* o el valor que prefieras */
+}

@@ -1,42 +1,43 @@
 <mat-card class="profile-card">
-  <div *ngFor="let persona of personas; let i = index">
-    <!-- Banner -->
-    <div class="banner-container">
-      <img [src]="persona.urlImagenBanner" class="banner-image" alt="banner">
-    </div>
-
-    <div class="profile-content">
-      <!-- Foto y Datos Personales -->
-      <div class="profile-header">
-        <mat-card class="profile-image-card">
-          <img [src]="persona.urlImagen" class="profile-image" alt="perfil">
-        </mat-card>
-
-        <div class="profile-info">
-          <h2 class="mat-h1">{{persona.nombre}} {{persona.apellido}}</h2>
-          <h3 class="mat-h2">{{persona.profesion}}</h3>
-        </div>
+  @for (persona of personas; track persona; let i = $index) {
+    <div>
+      <!-- Banner -->
+      <div class="banner-container">
+        <img [src]="persona.urlImagenBanner" class="banner-image" alt="banner">
       </div>
-
-      <!-- Acerca De -->
-      <mat-card class="about-section">
-        <mat-card-header>
-          <mat-card-title>Acerca de mí</mat-card-title>
-          <div *ngIf="isAdmin" class="action-buttons">
-            <button mat-icon-button color="primary" (click)="editarPersona(i)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="eliminarPersona(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
+      <div class="profile-content">
+        <!-- Foto y Datos Personales -->
+        <div class="profile-header">
+          <mat-card class="profile-image-card">
+            <img [src]="persona.urlImagen" class="profile-image" alt="perfil">
+          </mat-card>
+          <div class="profile-info">
+            <h2 class="mat-h1">{{persona.nombre}} {{persona.apellido}}</h2>
+            <h3 class="mat-h2">{{persona.profesion}}</h3>
           </div>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{persona.acercaDe}}</p>
-        </mat-card-content>
-      </mat-card>
+        </div>
+        <!-- Acerca De -->
+        <mat-card class="about-section">
+          <mat-card-header>
+            <mat-card-title>Acerca de mí</mat-card-title>
+            @if (isAdmin) {
+              <div class="action-buttons">
+                <button mat-icon-button color="primary" (click)="editarPersona(i)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" (click)="eliminarPersona(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            }
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{persona.acercaDe}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
-  </div>
+  }
 </mat-card>
 
 <!-- Dialog para editar -->
@@ -47,33 +48,41 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="nombre">
-        <mat-error *ngIf="acercaDeForm.get('nombre')?.hasError('required')">
-          El nombre es requerido
-        </mat-error>
+        @if (acercaDeForm.get('nombre')?.hasError('required')) {
+          <mat-error>
+            El nombre es requerido
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Apellido</mat-label>
         <input matInput formControlName="apellido">
-        <mat-error *ngIf="acercaDeForm.get('apellido')?.hasError('required')">
-          El apellido es requerido
-        </mat-error>
+        @if (acercaDeForm.get('apellido')?.hasError('required')) {
+          <mat-error>
+            El apellido es requerido
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Profesión</mat-label>
         <input matInput formControlName="profesion">
-        <mat-error *ngIf="acercaDeForm.get('profesion')?.hasError('required')">
-          La profesión es requerida
-        </mat-error>
+        @if (acercaDeForm.get('profesion')?.hasError('required')) {
+          <mat-error>
+            La profesión es requerida
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Acerca de mí</mat-label>
         <textarea matInput formControlName="acercaDe" rows="5"></textarea>
-        <mat-error *ngIf="acercaDeForm.get('acercaDe')?.hasError('required')">
-          La descripción es requerida
-        </mat-error>
+        @if (acercaDeForm.get('acercaDe')?.hasError('required')) {
+          <mat-error>
+            La descripción es requerida
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
@@ -89,9 +98,9 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancelar</button>
-    <button mat-raised-button color="primary" 
-            [disabled]="acercaDeForm.invalid"
-            (click)="nuevaPersonas(acercaDeForm.get('id')?.value)">
+    <button mat-raised-button color="primary"
+      [disabled]="acercaDeForm.invalid"
+      (click)="nuevaPersonas(acercaDeForm.get('id')?.value)">
       Guardar
     </button>
   </mat-dialog-actions>

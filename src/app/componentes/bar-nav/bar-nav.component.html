@@ -27,20 +27,24 @@
 
         <!-- Login/Logout -->
         <div class="auth-buttons">
-          <button *ngIf="!isLogged" 
-                  mat-raised-button 
-                  color="primary" 
-                  (click)="openLogin()">
-            <mat-icon>login</mat-icon>
-            Login
-          </button>
-          <button *ngIf="isLogged" 
-                  mat-raised-button 
-                  color="warn"
-                  (click)="onLogOut()">
-            <mat-icon>logout</mat-icon>
-            Salir
-          </button>
+          @if (!isLogged) {
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="openLogin()">
+              <mat-icon>login</mat-icon>
+              Login
+            </button>
+          }
+          @if (isLogged) {
+            <button
+              mat-raised-button
+              color="warn"
+              (click)="onLogOut()">
+              <mat-icon>logout</mat-icon>
+              Salir
+            </button>
+          }
         </div>
       </div>
     </div>

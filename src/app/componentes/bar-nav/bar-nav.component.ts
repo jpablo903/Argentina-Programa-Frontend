@@ -12,9 +12,10 @@ import { LoginDialogComponent } from 'src/app/dialogs/login-dialog/login-dialog.
 
 
 @Component({
-  selector: 'app-bar-nav',
-  templateUrl: './bar-nav.component.html',
-  styleUrls: ['./bar-nav.component.css'],
+    selector: 'app-bar-nav',
+    templateUrl: './bar-nav.component.html',
+    styleUrls: ['./bar-nav.component.css'],
+    standalone: false
 })
 export class BarNavComponent implements OnInit {
   @ViewChild('loginDialog') loginDialog!: TemplateRef<any>;
@@ -34,7 +35,7 @@ export class BarNavComponent implements OnInit {
     private dialog: MatDialog,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
-  ) { 
+  ) {
     this.loginForm = this.formBuilder.group({
       nombreUsuario: ['', [Validators.required, Validators.minLength(4)]],
       password: ['', [Validators.required, Validators.minLength(6)]]

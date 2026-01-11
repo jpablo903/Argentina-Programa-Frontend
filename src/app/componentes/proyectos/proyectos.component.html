@@ -3,42 +3,45 @@
   <mat-card class="section-header">
     <mat-card-header>
       <mat-card-title>Proyectos</mat-card-title>
-      <div *ngIf="isAdmin" class="header-actions">
-        <button mat-fab color="primary" (click)="onNewProyecto()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </div>
+      @if (isAdmin) {
+        <div class="header-actions">
+          <button mat-fab color="primary" (click)="onNewProyecto()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      }
     </mat-card-header>
   </mat-card>
 
   <!-- Lista de Proyectos -->
   <div class="projects-grid">
-    <mat-card class="project-card" *ngFor="let proyecto of proyectos; let i = index">
-      <img mat-card-image [src]="proyecto.urlImagen" [alt]="proyecto.nombreProyecto" class="project-image">
-      
-      <mat-card-header>
-        <mat-card-title>{{proyecto.nombreProyecto}}</mat-card-title>
-        <div *ngIf="isAdmin" class="card-actions">
-          <button mat-icon-button color="primary" (click)="editarProyecto(i)">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="eliminarProyecto(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </mat-card-header>
-
-      <mat-card-content>
-        <p>{{proyecto.descripcion}}</p>
-      </mat-card-content>
-
-      <mat-card-actions align="end">
-        <a mat-button [href]="proyecto.urlProyecto" target="_blank" color="primary">
-          <mat-icon>launch</mat-icon>
-          Ver Repositorio
-        </a>
-      </mat-card-actions>
-    </mat-card>
+    @for (proyecto of proyectos; track proyecto; let i = $index) {
+      <mat-card class="project-card">
+        <img mat-card-image [src]="proyecto.urlImagen" [alt]="proyecto.nombreProyecto" class="project-image">
+        <mat-card-header>
+          <mat-card-title>{{proyecto.nombreProyecto}}</mat-card-title>
+          @if (isAdmin) {
+            <div class="card-actions">
+              <button mat-icon-button color="primary" (click)="editarProyecto(i)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="eliminarProyecto(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          }
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{proyecto.descripcion}}</p>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <a mat-button [href]="proyecto.urlProyecto" target="_blank" color="primary">
+            <mat-icon>launch</mat-icon>
+            Ver Repositorio
+          </a>
+        </mat-card-actions>
+      </mat-card>
+    }
   </div>
 </div>
 
@@ -50,33 +53,41 @@
       <mat-form-field appearance="outline">
         <mat-label>Nombre del Proyecto</mat-label>
         <input matInput formControlName="nombreProyecto">
-        <mat-error *ngIf="proyectoForm.get('nombreProyecto')?.hasError('required')">
-          El nombre es requerido
-        </mat-error>
+        @if (proyectoForm.get('nombreProyecto')?.hasError('required')) {
+          <mat-error>
+            El nombre es requerido
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>URL del Proyecto</mat-label>
         <input matInput formControlName="urlProyecto">
-        <mat-error *ngIf="proyectoForm.get('urlProyecto')?.hasError('required')">
-          La URL es requerida
-        </mat-error>
+        @if (proyectoForm.get('urlProyecto')?.hasError('required')) {
+          <mat-error>
+            La URL es requerida
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>URL de la Imagen</mat-label>
         <input matInput formControlName="urlImagen">
-        <mat-error *ngIf="proyectoForm.get('urlImagen')?.hasError('required')">
-          La URL de la imagen es requerida
-        </mat-error>
+        @if (proyectoForm.get('urlImagen')?.hasError('required')) {
+          <mat-error>
+            La URL de la imagen es requerida
+          </mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Descripción</mat-label>
         <textarea matInput formControlName="descripcion" rows="4"></textarea>
-        <mat-error *ngIf="proyectoForm.get('descripcion')?.hasError('required')">
-          La descripción es requerida
-        </mat-error>
+        @if (proyectoForm.get('descripcion')?.hasError('required')) {
+          <mat-error>
+            La descripción es requerida
+          </mat-error>
+        }
       </mat-form-field>
     </form>
   </mat-dialog-content>
@@ -85,8 +96,8 @@
       Cancelar
     </button>
     <button mat-raised-button color="primary"
-            [disabled]="proyectoForm.invalid"
-            (click)="nuevoProyecto(proyectoForm.get('id')?.value)">
+      [disabled]="proyectoForm.invalid"
+      (click)="nuevoProyecto(proyectoForm.get('id')?.value)">
       Guardar
     </button>
   </mat-dialog-actions>
