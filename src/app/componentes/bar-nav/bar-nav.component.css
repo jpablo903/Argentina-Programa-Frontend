@@ -1,11 +1,23 @@
+/* =====================================================
+   Navbar Component - Tema Oscuro Moderno
+   ===================================================== */
+
 .nav-toolbar {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
-  background-image: linear-gradient(to right, rgba(33,150,243,1), rgba(22,255,245,0.60));
-  height: 64px;
+  z-index: var(--z-fixed);
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  height: 70px;
+  transition: background var(--transition-base), box-shadow var(--transition-base);
+}
+
+.nav-toolbar:hover {
+  box-shadow: var(--shadow-lg);
 }
 
 .toolbar-content {
@@ -15,60 +27,139 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 var(--spacing-6);
   height: 100%;
 }
+
+/* ─────────────────────────────────────────────────
+   Logo Section
+   ───────────────────────────────────────────────── */
 
 .logo-section {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--spacing-4);
 }
 
 .logo {
-  height: 40px;
-  filter: brightness(0) invert(1); /* Hace el logo blanco */
+  height: 55px;
+  filter: brightness(0) invert(1);
+  transition: transform var(--transition-fast);
+}
+
+.logo:hover {
+  transform: scale(1.05);
 }
 
 .program-text {
-  font-weight: 500;
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
   letter-spacing: 0.5px;
-  color: white;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
+/* ─────────────────────────────────────────────────
+   Actions Section
+   ───────────────────────────────────────────────── */
 
 .actions-section {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--spacing-8);
 }
 
+/* Social Links */
 .social-links {
   display: flex;
-  gap: 12px;
+  gap: var(--spacing-2);
 }
 
 .social-links a {
-  color: white;
-  opacity: 0.9;
-  transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-full);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
 }
 
 .social-links a:hover {
-  opacity: 1;
+  color: var(--color-accent);
+  background: rgba(34, 211, 238, 0.1);
+  border-color: rgba(34, 211, 238, 0.3);
+  transform: translateY(-2px);
 }
 
-.full-width {
-  width: 100%;
-  margin-bottom: 16px;
+.social-links a mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
 }
 
-/* Estilos para el botón de login */
-::ng-deep .mat-raised-button {
-  text-transform: uppercase;
+/* Auth Buttons */
+.auth-buttons button {
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-medium);
   letter-spacing: 0.5px;
+  padding: var(--spacing-2) var(--spacing-5);
+  border-radius: var(--border-radius-lg);
+  transition: all var(--transition-fast);
+}
+
+.auth-buttons button mat-icon {
+  margin-right: var(--spacing-2);
+}
+
+/* ─────────────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────────────── */
+
+@media screen and (max-width: 768px) {
+  .toolbar-content {
+    padding: 0 var(--spacing-4);
+  }
+
+  .program-text {
+    display: none;
+  }
+
+  .social-links {
+    display: none;
+  }
+
+  .actions-section {
+    gap: var(--spacing-4);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .nav-toolbar {
+    height: 60px;
+  }
+
+  .logo {
+    height: 36px;
+  }
+
+  .auth-buttons button {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-sm);
+  }
+
+  .auth-buttons button span {
+    display: none;
+  }
 }
 
 /* Ajuste para el contenido debajo del navbar */
-:host + * {
-  margin-top: 64px;
+:host+* {
+  margin-top: 70px;
 }

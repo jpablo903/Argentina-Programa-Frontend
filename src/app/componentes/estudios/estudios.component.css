@@ -1,13 +1,37 @@
+/* =====================================================
+   Estudios Component - Tema Oscuro Moderno
+   ===================================================== */
+
 .education-section {
-  padding: 24px;
-  background-image: linear-gradient( 79.8deg,  rgba(101,132,154,1) 3.2%, rgba(160,197,201,1) 89.1% );
+  padding: var(--spacing-12) var(--spacing-6);
+  background: var(--color-bg-secondary);
   min-height: auto;
+  position: relative;
 }
 
+/* Patrón decorativo de fondo */
+.education-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-primary);
+}
+
+/* ─────────────────────────────────────────────────
+   Section Header
+   ───────────────────────────────────────────────── */
+
 .section-header {
-  margin-bottom: 24px;
-  background: rgba(226, 224, 224, 0.649);
-  color:rgb(127, 124, 124);
+  margin-bottom: var(--spacing-8);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-header mat-card-header {
@@ -16,111 +40,156 @@
   align-items: center;
 }
 
-.education-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+.section-header mat-card-title {
+  font-family: var(--font-family-display) !important;
+  font-size: var(--font-size-3xl) !important;
+  font-weight: var(--font-weight-bold) !important;
+  color: var(--color-text-primary) !important;
+  margin: 0 !important;
 }
 
+.header-actions {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+/* ─────────────────────────────────────────────────
+   Education List
+   ───────────────────────────────────────────────── */
+
+.education-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-6);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────────────────────────
+   Education Card
+   ───────────────────────────────────────────────── */
+
 .education-card {
-  background: rgba(173, 191, 227, 0.9);
-  transition: transform 0.3s ease;
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--border-radius-xl) !important;
+  padding: var(--spacing-6) !important;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .education-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-xl);
+  border-color: rgba(99, 102, 241, 0.3) !important;
 }
 
+/* Education Logo */
 .education-logo {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: var(--border-radius-lg);
+  background: var(--gradient-surface);
+  border: 1px solid var(--glass-border);
+  padding: var(--spacing-2);
 }
 
 .education-logo img {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: brightness(0.9);
 }
 
+/* Card Header */
+.education-card mat-card-header {
+  margin-bottom: var(--spacing-4);
+}
+
+.education-card mat-card-title {
+  font-size: var(--font-size-xl) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  color: var(--color-text-primary) !important;
+  margin-bottom: var(--spacing-1) !important;
+}
+
+.education-card mat-card-subtitle {
+  color: var(--color-accent) !important;
+  font-size: var(--font-size-sm) !important;
+  font-weight: var(--font-weight-medium) !important;
+}
+
+/* Card Content */
+.education-card mat-card-content p {
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  font-size: var(--font-size-base);
+}
+
+/* Card Actions */
 .card-actions {
   margin-left: auto;
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-1);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
 }
+
+.education-card:hover .card-actions {
+  opacity: 1;
+}
+
+/* ─────────────────────────────────────────────────
+   Dialog Styles
+   ───────────────────────────────────────────────── */
 
 .date-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-4);
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-4);
 }
 
-mat-card-title {
-  font-size: 1.25rem !important;
-  margin-bottom: 4px !important;
+/* ─────────────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────────────── */
+
+@media screen and (max-width: 768px) {
+  .education-section {
+    padding: var(--spacing-8) var(--spacing-4);
+  }
+
+  .education-list {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+
+  .section-header mat-card-title {
+    font-size: var(--font-size-2xl) !important;
+  }
+
+  .date-fields {
+    grid-template-columns: 1fr;
+  }
 }
 
-mat-card-subtitle {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
+@media screen and (max-width: 480px) {
+  .education-card {
+    padding: var(--spacing-4) !important;
+  }
 
-.modal-container {
-  padding: 20px;
-}
-
-.date-fields {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-mat-dialog-content {
-  margin: 0;
-  padding: 0;
-}
-
-mat-dialog-actions {
-  margin: 0;
-  padding: 16px 0;
-}
-
-/* Para hacer el texto visible en los inputs */
-::ng-deep .mat-form-field-label {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
-
-::ng-deep .mat-input-element {
-  color: rgba(0, 0, 0, 0.87) !important;
-}
-
-::ng-deep .mat-form-field-outline {
-  color: rgba(0, 0, 0, 0.38) !important;
-}
-
-/* Para los placeholders */
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-placeholder {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
-
-/* Para cuando el campo está enfocado */
-::ng-deep .mat-focused .mat-form-field-label {
-  color: #1976d2 !important;
-}
-
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-  color: #1976d2 !important;
+  .education-logo {
+    width: 48px;
+    height: 48px;
+  }
 }

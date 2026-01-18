@@ -1,52 +1,199 @@
-/* Estilos comunes para todos los modales */
-.modal-dialog {
-  padding: 20px;
-  background-color: white;
+/* =====================================================
+   Estilos Globales - Argentina Programa Frontend
+   ===================================================== */
+
+/* Importar Design Tokens */
+@import 'design-tokens.css';
+
+/* =====================================================
+   ESTILOS DE DIALOGS (Material)
+   ===================================================== */
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: var(--color-bg-secondary) !important;
+  --mdc-dialog-subhead-color: var(--color-text-primary) !important;
+  --mdc-dialog-supporting-text-color: var(--color-text-secondary) !important;
 }
 
-/* Estilo para campos de formulario */
-.mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
-}
-
-/* Estilos para botones */
-.mat-dialog-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  padding: 16px 0;
-  margin-top: 16px;
-}
-
-/* Botón Cancelar */
-.mat-dialog-actions button[mat-button] {
-  color: #dc3545;
-  font-weight: 500;
-}
-
-/* Botón Guardar */
-.mat-dialog-actions button[mat-raised-button] {
-  background-color: #28a745;
-  color: white;
+.mat-mdc-dialog-surface {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--border-radius-xl) !important;
 }
 
 /* Título del modal */
-.mat-dialog-title {
-  color: #1976d2;
-  margin-bottom: 20px !important;
+h2[mat-dialog-title] {
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-family-display) !important;
+  font-weight: var(--font-weight-semibold) !important;
+  font-size: var(--font-size-xl) !important;
+  margin-bottom: var(--spacing-4) !important;
 }
 
-/* Campos de formulario */
-::ng-deep .mat-form-field-label {
-  color: rgba(0, 0, 0, 0.6) !important;
+/* Contenido del modal */
+mat-dialog-content {
+  color: var(--color-text-secondary) !important;
 }
 
-::ng-deep .mat-form-field-outline {
-  color: rgba(0, 0, 0, 0.12) !important;
+/* =====================================================
+   FORM FIELDS (Material)
+   ===================================================== */
+
+.mat-mdc-form-field {
+  width: 100%;
+  margin-bottom: var(--spacing-4);
 }
+
+/* Estilos para campos outline */
+.mat-mdc-text-field-wrapper {
+  background-color: var(--color-bg-secondary) !important;
+}
+
+.mdc-text-field--outlined .mdc-notched-outline__leading,
+.mdc-text-field--outlined .mdc-notched-outline__notch,
+.mdc-text-field--outlined .mdc-notched-outline__trailing {
+  border-color: var(--border-color) !important;
+}
+
+.mdc-text-field--outlined:hover .mdc-notched-outline__leading,
+.mdc-text-field--outlined:hover .mdc-notched-outline__notch,
+.mdc-text-field--outlined:hover .mdc-notched-outline__trailing {
+  border-color: var(--border-color-hover) !important;
+}
+
+.mdc-text-field--focused .mdc-notched-outline__leading,
+.mdc-text-field--focused .mdc-notched-outline__notch,
+.mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: var(--color-primary) !important;
+}
+
+/* Labels */
+.mat-mdc-floating-label {
+  color: var(--color-text-secondary) !important;
+}
+
+.mdc-text-field--focused .mat-mdc-floating-label {
+  color: var(--color-primary-light) !important;
+}
+
+/* Input text */
+.mat-mdc-input-element {
+  color: var(--color-text-primary) !important;
+  caret-color: var(--color-accent) !important;
+}
+
+/* =====================================================
+   BOTONES (Material)
+   ===================================================== */
+
+/* Botón raised primary */
+.mat-mdc-raised-button.mat-primary {
+  background: var(--gradient-primary) !important;
+  color: var(--color-text-primary) !important;
+  font-weight: var(--font-weight-medium) !important;
+  border-radius: var(--border-radius-md) !important;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-primary) !important;
+}
+
+/* Botón warn */
+.mat-mdc-raised-button.mat-warn {
+  background-color: var(--color-error) !important;
+}
+
+/* Botón icon */
+.mat-mdc-icon-button {
+  color: var(--color-text-secondary) !important;
+  transition: color var(--transition-fast), transform var(--transition-fast) !important;
+}
+
+.mat-mdc-icon-button:hover {
+  color: var(--color-accent) !important;
+  transform: scale(1.1);
+}
+
+/* FAB */
+.mat-mdc-fab.mat-primary {
+  background: var(--gradient-primary) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.mat-mdc-fab.mat-primary:hover {
+  box-shadow: var(--glow-primary) !important;
+}
+
+/* =====================================================
+   CARDS (Material)
+   ===================================================== */
+
+.mat-mdc-card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--border-radius-xl) !important;
+  color: var(--color-text-primary) !important;
+}
+
+.mat-mdc-card-title {
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-family-display) !important;
+  font-weight: var(--font-weight-semibold) !important;
+}
+
+.mat-mdc-card-subtitle {
+  color: var(--color-text-secondary) !important;
+}
+
+/* =====================================================
+   TOOLBAR (Material)
+   ===================================================== */
+
+.mat-toolbar.mat-primary {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+}
+
+/* =====================================================
+   UTILIDADES ADICIONALES
+   ===================================================== */
 
 .section-spacing {
-  margin-bottom: 2rem;
-  /* o el valor que prefieras */
+  margin-bottom: var(--spacing-8);
+}
+
+/* Animación de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Container responsivo */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-4);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--spacing-6);
+  }
 }

@@ -1,14 +1,37 @@
-/* skills.component.css */
+/* =====================================================
+   Skills Component - Tema Oscuro Moderno
+   ===================================================== */
+
 .skills-section {
-  padding: 24px;
-  background-image: linear-gradient(79.8deg, rgba(101,132,154,1) 3.2%, rgba(160,197,201,1) 89.1%);
+  padding: var(--spacing-12) var(--spacing-6);
+  background: var(--color-bg-secondary);
   min-height: auto;
+  position: relative;
 }
 
+/* Gradiente decorativo superior */
+.skills-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-primary);
+}
+
+/* ─────────────────────────────────────────────────
+   Section Header
+   ───────────────────────────────────────────────── */
+
 .section-header {
-  margin-bottom: 24px;
-  background: rgba(236, 225, 225, 0.673);
-  color: rgb(100, 94, 94);
+  margin-bottom: var(--spacing-8);
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .section-header mat-card-header {
@@ -17,31 +40,53 @@
   align-items: center;
 }
 
-/* Grid de Skills */
+.section-header mat-card-title {
+  font-family: var(--font-family-display) !important;
+  font-size: var(--font-size-3xl) !important;
+  font-weight: var(--font-weight-bold) !important;
+  color: var(--color-text-primary) !important;
+  margin: 0 !important;
+}
+
+.header-actions {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+/* ─────────────────────────────────────────────────
+   Skills Grid
+   ───────────────────────────────────────────────── */
+
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--spacing-5);
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
 }
 
 .skill-item {
   width: 100%;
 }
 
+/* ─────────────────────────────────────────────────
+   Skill Card
+   ───────────────────────────────────────────────── */
+
 .skill-card {
-  background: rgba(255, 255, 255, 0.15) !important;
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 20px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--border-radius-xl) !important;
+  padding: var(--spacing-5) !important;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 .skill-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(99, 102, 241, 0.3) !important;
 }
 
 .skill-content {
@@ -50,52 +95,86 @@
   align-items: stretch;
 }
 
-/* Barra de progreso */
+/* ─────────────────────────────────────────────────
+   Progress Bar
+   ───────────────────────────────────────────────── */
+
 .progress-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--spacing-3);
 }
 
 .skill-name {
-  color: #ffffff;
-  font-size: 1.2rem;
-  font-weight: 600;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
 }
 
 .progress-bar-wrapper {
   width: 100%;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--border-radius-full);
   overflow: hidden;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 
 .progress-bar {
   height: 100%;
-  background: linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%);
-  border-radius: 10px;
-  transition: width 0.8s ease-in-out;
-  box-shadow: 0 2px 4px rgba(76, 175, 80, 0.4);
+  background: var(--gradient-primary);
+  border-radius: var(--border-radius-full);
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efecto de brillo animado */
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+
+  100% {
+    left: 100%;
+  }
 }
 
 .skill-percentage {
-  color: #ffffff;
-  font-size: 1.5rem;
-  font-weight: bold;
+  color: var(--color-accent);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
   text-align: right;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  text-shadow: var(--glow-accent);
 }
+
+/* ─────────────────────────────────────────────────
+   Skill Actions
+   ───────────────────────────────────────────────── */
 
 .skill-actions {
   display: flex;
-  gap: 8px;
-  margin-top: 16px;
+  gap: var(--spacing-2);
+  margin-top: var(--spacing-4);
   justify-content: center;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--transition-fast);
 }
 
 .skill-card:hover .skill-actions {
@@ -103,27 +182,42 @@
 }
 
 .skill-actions button {
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--color-bg-tertiary) !important;
 }
 
-/* Estilos para el diálogo */
-mat-form-field {
-  width: 100%;
-  margin-bottom: 16px;
-}
+/* ─────────────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────────────── */
 
-/* Ajustes para responsive */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) {
+  .skills-section {
+    padding: var(--spacing-8) var(--spacing-4);
+  }
+
   .skills-grid {
     grid-template-columns: 1fr;
-    padding: 10px;
+    gap: var(--spacing-4);
+  }
+
+  .section-header mat-card-title {
+    font-size: var(--font-size-2xl) !important;
+  }
+
+  .skill-card {
+    padding: var(--spacing-4) !important;
   }
 
   .skill-name {
-    font-size: 1rem;
+    font-size: var(--font-size-base);
   }
 
   .skill-percentage {
-    font-size: 1.2rem;
+    font-size: var(--font-size-xl);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .progress-bar-wrapper {
+    height: 10px;
   }
 }

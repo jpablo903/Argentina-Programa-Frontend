@@ -1,0 +1,35 @@
+<footer class="footer">
+    <div class="footer-container">
+        <!-- Logo y descripción -->
+        <div class="footer-brand">
+            <div class="brand-logo">
+                <img src="../../../assets/APLogo.png" alt="Logo" class="logo">
+                <span class="brand-text">#YoProgramo</span>
+            </div>
+            <p class="brand-description">
+                Portfolio profesional desarrollado con Angular y Material Design.
+            </p>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="footer-social">
+            <h4 class="footer-title">Redes Sociales</h4>
+            <div class="social-links">
+                @for (social of socialLinks; track social.icon) {
+                <a [href]="social.url" target="_blank" [title]="social.label" class="social-link">
+                    <mat-icon [svgIcon]="social.icon"></mat-icon>
+                </a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="footer-bottom">
+        <div class="footer-container">
+            <p class="copyright">
+                © {{ currentYear }} Juan Pablo Rajoy. Todos los derechos reservados.
+            </p>
+        </div>
+    </div>
+</footer>

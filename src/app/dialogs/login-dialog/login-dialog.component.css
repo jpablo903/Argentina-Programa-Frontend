@@ -1,78 +1,133 @@
-/* login-dialog.component.css */
+/* =====================================================
+   Login Dialog - Tema Oscuro Moderno
+   ===================================================== */
+
 .login-container {
-  padding: 20px;
-  background-color: white;
+  padding: var(--spacing-6);
+  background: transparent;
+  min-width: 320px;
 }
 
-h2 {
-  color: #1976d2;
-  margin-bottom: 20px;
+/* ─────────────────────────────────────────────────
+   Título
+   ───────────────────────────────────────────────── */
+
+h2[mat-dialog-title] {
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-family-display) !important;
+  font-weight: var(--font-weight-bold) !important;
+  font-size: var(--font-size-2xl) !important;
+  margin-bottom: var(--spacing-4) !important;
+  text-align: center;
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
+
+/* ─────────────────────────────────────────────────
+   Form Fields
+   ───────────────────────────────────────────────── */
 
 mat-form-field {
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-3);
 }
+
+/* Wrapper del input */
+:host ::ng-deep .mat-mdc-text-field-wrapper {
+  background-color: var(--color-bg-secondary) !important;
+  border-radius: var(--border-radius-md) !important;
+}
+
+/* Bordes del outline */
+:host ::ng-deep .mdc-notched-outline__leading,
+:host ::ng-deep .mdc-notched-outline__notch,
+:host ::ng-deep .mdc-notched-outline__trailing {
+  border-color: var(--border-color) !important;
+}
+
+:host ::ng-deep .mdc-text-field--focused .mdc-notched-outline__leading,
+:host ::ng-deep .mdc-text-field--focused .mdc-notched-outline__notch,
+:host ::ng-deep .mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: var(--color-primary) !important;
+}
+
+/* Labels */
+:host ::ng-deep .mat-mdc-floating-label {
+  color: var(--color-text-secondary) !important;
+}
+
+:host ::ng-deep .mdc-text-field--focused .mat-mdc-floating-label {
+  color: var(--color-primary-light) !important;
+}
+
+/* Input text */
+:host ::ng-deep .mat-mdc-input-element {
+  color: var(--color-text-primary) !important;
+  caret-color: var(--color-accent) !important;
+}
+
+/* Placeholder */
+:host ::ng-deep input::placeholder {
+  color: var(--color-text-muted) !important;
+}
+
+/* ─────────────────────────────────────────────────
+   Dialog Content
+   ───────────────────────────────────────────────── */
 
 mat-dialog-content {
-  padding: 0;
+  padding: 0 !important;
+  overflow: visible !important;
 }
 
-mat-dialog-actions {
-  padding: 16px 0;
-  margin-top: 16px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-input.mat-input-element {
-  color: rgba(0, 0, 0, 0.87);
-}
-
-::ng-deep .mat-form-field-label {
-  color: rgba(0, 0, 0, 0.6) !important;
-}
-
-::ng-deep .mat-form-field-outline {
-  color: rgba(0, 0, 0, 0.12) !important;
-}
-
-/* login-dialog.component.css */
-.login-container {
-  padding: 20px;
-  background-color: white;
-}
+/* ─────────────────────────────────────────────────
+   Dialog Actions
+   ───────────────────────────────────────────────── */
 
 mat-dialog-actions {
   display: flex;
   justify-content: space-between;
-  padding: 16px 0;
-  margin-top: 16px;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) 0 0 0 !important;
+  margin-top: var(--spacing-4);
+  border-top: 1px solid var(--glass-border);
 }
 
 /* Botón Cancelar */
 button[mat-button] {
-  background-color: #b32937b7;
-  color: white;
-  font-weight: 500;
+  background-color: transparent !important;
+  color: var(--color-error) !important;
+  font-weight: var(--font-weight-medium) !important;
+  border: 1px solid var(--color-error) !important;
+  border-radius: var(--border-radius-md) !important;
+  padding: var(--spacing-2) var(--spacing-4) !important;
+  transition: all var(--transition-fast) !important;
 }
 
 button[mat-button]:hover {
-  background-color: rgba(235, 20, 41, 0.971);
+  background-color: rgba(239, 68, 68, 0.1) !important;
 }
 
 /* Botón Iniciar Sesión */
 button[mat-raised-button] {
-  background-color: #28a745;  /* Verde */
-  color: white;
+  background: var(--gradient-primary) !important;
+  color: var(--color-text-primary) !important;
+  font-weight: var(--font-weight-medium) !important;
+  border-radius: var(--border-radius-md) !important;
+  padding: var(--spacing-2) var(--spacing-5) !important;
+  transition: all var(--transition-fast) !important;
 }
 
 button[mat-raised-button]:hover {
-  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: var(--glow-primary) !important;
 }
 
 button[mat-raised-button][disabled] {
-  background-color: rgba(0, 0, 0, 0.12);
-  color: rgba(0, 0, 0, 0.26);
+  background: var(--color-bg-tertiary) !important;
+  color: var(--color-text-muted) !important;
+  transform: none;
+  box-shadow: none !important;
 }

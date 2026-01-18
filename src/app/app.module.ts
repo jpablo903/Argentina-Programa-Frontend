@@ -9,6 +9,7 @@ import { EstudiosComponent } from './componentes/estudios/estudios.component';
 import { ExperienciaComponent } from './componentes/experiencia/experiencia.component';
 import { ProyectosComponent } from './componentes/proyectos/proyectos.component';
 import { SkillsComponent } from './componentes/skill/skill.component';
+import { FooterComponent } from './componentes/footer/footer.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -37,6 +38,7 @@ import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.compon
         ExperienciaComponent,
         ProyectosComponent,
         SkillsComponent,
+        FooterComponent,
         LoginDialogComponent
     ],
     imports: [
