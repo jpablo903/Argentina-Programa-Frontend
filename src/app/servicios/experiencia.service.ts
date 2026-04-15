@@ -2,14 +2,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Experiencia } from '../models/experiencia';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExperienciaService {
 
-  experienciaUrl = "https://portfolio-backend-ev9h.onrender.com/experiencia/";
-   //experienciaUrl = "http://localhost:8080/experiencia/";
+  experienciaUrl = `${environment.apiUrl}/experiencia/`;
   
 
   hpptOptions = {

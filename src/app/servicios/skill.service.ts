@@ -2,14 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Skill } from '../models/skill';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SkillService {
 
-  skillUrl= "https://portfolio-backend-ev9h.onrender.com/skill/";
-   //skillUrl= "http://localhost:8080/skill/";
+  skillUrl = `${environment.apiUrl}/skill/`;
   
 
   constructor(private httpClient: HttpClient) { }
