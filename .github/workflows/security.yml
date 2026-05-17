@@ -17,24 +17,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '24'
-          cache: 'npm'
+          cache: 'pnpm'
       
-      - name: Install dependencies (lockfile only)
-        run: npm install --package-lock-only
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       
-      - name: Run npm audit
-        run: npm audit --audit-level=high
+      - name: Run pnpm audit
+        run: pnpm audit --audit-level=high
         working-directory: ./
         continue-on-error: true
         
       - name: Generate audit report
         run: |
           echo "Generating security audit report..."
-          npm audit --json > audit-report.json || true
+          pnpm audit --json > audit-report.json || true
         working-directory: ./
           
       - name: Upload audit report
