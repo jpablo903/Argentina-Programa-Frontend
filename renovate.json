@@ -1,0 +1,35 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["@angular/*"],
+      "groupName": "Angular",
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash",
+      "separateMajorMinor": false,
+      "patch": {
+        "automerge": true
+      },
+      "minor": {
+        "automerge": true
+      }
+    },
+    {
+      "matchPackagePatterns": ["ngx-toastr"],
+      "groupName": "ngx-toastr",
+      "automerge": true,
+      "automergeType": "pr"
+    }
+  ],
+  "automerge": true,
+  "automergeType": "pr",
+  "commitMessagePrefix": "fix:",
+  "rebaseWhen": "behind-base",
+  "platformAutomerge": true,
+  "includeForks": true,
+  "gitLabAutomerge": false
+}

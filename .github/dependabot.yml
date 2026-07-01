@@ -1,0 +1,39 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Argentina/Buenos_Aires"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "fix"
+    grouping:
+      entries:
+        - patterns:
+            - "@angular/*"
+          title: "Angular dependencies"
+    automerge: true
+    labels:
+      - "dependencies"
+      - "automerge"
+    reviewers:
+      - "jpablo903"
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["minor", "major"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+    automerge: true
+    labels:
+      - "ci"
+      - "automerge"
