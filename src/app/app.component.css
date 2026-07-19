@@ -1,47 +1,53 @@
-/* Estilos comunes para todos los modales */
-.modal-dialog {
-    padding: 20px;
-    background-color: white;
-  }
-  
-  /* Estilo para campos de formulario */
-  .mat-form-field {
-    width: 100%;
-    margin-bottom: 16px;
-  }
-  
-  /* Estilos para botones */
-  .mat-dialog-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    padding: 16px 0;
-    margin-top: 16px;
-  }
-  
-  /* Botón Cancelar */
-  .mat-dialog-actions button[mat-button] {
-    color: #dc3545;
-    font-weight: 500;
-  }
-  
-  /* Botón Guardar */
-  .mat-dialog-actions button[mat-raised-button] {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  /* Título del modal */
-  .mat-dialog-title {
-    color: #1976d2;
-    margin-bottom: 20px !important;
-  }
-  
-  /* Campos de formulario */
-  ::ng-deep .mat-form-field-label {
-    color: rgba(0, 0, 0, 0.6) !important;
-  }
-  
-  ::ng-deep .mat-form-field-outline {
-    color: rgba(0, 0, 0, 0.12) !important;
-  }
+/* =====================================================
+   App Component - Estilos globales de diálogos y formularios
+   Tema Oscuro Moderno
+   ===================================================== */
+
+/* Contenedor del modal */
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: var(--color-bg-secondary);
+}
+
+/* Estilo para campos de formulario */
+.mat-form-field {
+  width: 100%;
+  margin-bottom: var(--spacing-4);
+}
+
+/* Acciones del dialog */
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4) 0;
+  margin-top: var(--spacing-4);
+}
+
+/* Botón Cancelar */
+.mat-dialog-actions button[mat-button] {
+  color: var(--color-error);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Botón Guardar */
+.mat-dialog-actions button[mat-raised-button] {
+  background: var(--gradient-primary);
+  color: var(--color-text-primary);
+}
+
+/* Título del modal */
+.mat-dialog-title {
+  color: var(--color-text-primary);
+  font-family: var(--font-family-display);
+  margin-bottom: var(--spacing-5) !important;
+}
+
+/* Campos de formulario - labels */
+::ng-deep .mat-form-field-label {
+  color: var(--color-text-secondary) !important;
+}
+
+/* Campos de formulario - outline */
+::ng-deep .mat-form-field-outline {
+  color: var(--border-color) !important;
+}
