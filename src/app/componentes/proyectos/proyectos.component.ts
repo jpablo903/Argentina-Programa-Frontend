@@ -1,42 +1,54 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { Proyecto } from 'src/app/models/proyecto';
 import { ProyectoService } from 'src/app/servicios/proyecto.service';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
+import { UrlValidatorService } from 'src/app/shared/url-validator.service';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-proyectos',
     templateUrl: './proyectos.component.html',
     styleUrls: ['./proyectos.component.css'],
-    standalone: false
+    standalone: false,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProyectosComponent implements OnInit {
+export class ProyectosComponent implements OnInit, OnDestroy {
   @ViewChild('proyectoDialog') proyectoDialog!: TemplateRef<any>;
   public proyectos: Proyecto[] = [];
   proyectoForm: FormGroup;
   isAdmin: boolean = false;
   private dialogRef: MatDialogRef<any> | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private proyectoService: ProyectoService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private authStateService: AuthStateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private urlValidator: UrlValidatorService
   ) {
     this.proyectoForm = this.formBuilder.group({
       id: [''],
       nombreProyecto: ['', [Validators.required]],
       descripcion: ['', [Validators.required]],
       urlProyecto: ['', [Validators.required]],
-      urlImagen: ['', [Validators.required]]
+      urlImagen: ['', [Validators.required, this.urlValidator.imageUrlValidator()]]
     });
 
-    this.authStateService.isAdmin$.subscribe(
+    this.authStateService.isAdmin$.pipe(takeUntil(this.destroy$)).subscribe(
       isAdmin => this.isAdmin = isAdmin
     );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit() {
@@ -137,19 +149,31 @@ export class ProyectosComponent implements OnInit {
 
   eliminarProyecto(index: number) {
     let proyecto: Proyecto = this.proyectos[index];
-    if (confirm('¿Desea eliminar el proyecto seleccionado?')) {
-      this.proyectoService.eliminar(proyecto.id).subscribe({
-        next: () => {
-          this.toastr.warning('Proyecto Eliminado', 'OK', {
-            timeOut: 3000,
-            positionClass: 'toast-top-center'
-          });
-          this.reloadData();
-        },
-        error: (error) => {
-          this.toastr.error('Error al eliminar el proyecto', 'ERROR');
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmar Eliminación',
+        message: '¿Desea eliminar el proyecto seleccionado?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.proyectoService.eliminar(proyecto.id).subscribe({
+          next: () => {
+            this.toastr.warning('Proyecto Eliminado', 'OK', {
+              timeOut: 3000,
+              positionClass: 'toast-top-center'
+            });
+            this.reloadData();
+          },
+          error: (error) => {
+            this.toastr.error('Error al eliminar el proyecto', 'ERROR');
+          }
+        });
+      }
+    });
   }
 }

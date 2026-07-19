@@ -12,7 +12,7 @@ export class ExperienciaService {
   experienciaUrl = `${environment.apiUrl}/experiencia/`;
   
 
-  hpptOptions = {
+  httpOptions = {
     headers: new HttpHeaders({
       'Content-type': 'application/json'
     })

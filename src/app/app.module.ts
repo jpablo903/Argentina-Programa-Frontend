@@ -28,6 +28,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { LoginDialogComponent } from './dialogs/login-dialog/login-dialog.compon
         ProyectosComponent,
         SkillsComponent,
         FooterComponent,
-        LoginDialogComponent
+        LoginDialogComponent,
+        ConfirmDialogComponent
     ],
     imports: [
         BrowserModule,

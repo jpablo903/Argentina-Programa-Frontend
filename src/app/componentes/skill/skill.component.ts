@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Skill } from 'src/app/models/skill';
 import { SkillService } from 'src/app/servicios/skill.service';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog.component';
 
 @Component({
   selector: 'app-skills',
@@ -131,19 +132,31 @@ export class SkillsComponent implements OnInit {
 
   eliminarSkill(index: number) {
     let skill: Skill = this.skills[index];
-    if (confirm('¿Desea eliminar la skill seleccionada?')) {
-      this.skillService.eliminar(skill.id).subscribe({
-        next: () => {
-          this.toastr.warning('Skill Eliminada', 'OK', {
-            timeOut: 3000,
-            positionClass: 'toast-top-center'
-          });
-          this.reloadData();
-        },
-        error: (error) => {
-          this.toastr.error('Error al eliminar la skill', 'ERROR');
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmar Eliminación',
+        message: '¿Desea eliminar la skill seleccionada?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.skillService.eliminar(skill.id).subscribe({
+          next: () => {
+            this.toastr.warning('Skill Eliminada', 'OK', {
+              timeOut: 3000,
+              positionClass: 'toast-top-center'
+            });
+            this.reloadData();
+          },
+          error: (error) => {
+            this.toastr.error('Error al eliminar la skill', 'ERROR');
+          }
+        });
+      }
+    });
   }
 }
