@@ -9,6 +9,7 @@ import { AuthStateService } from 'src/app/shared/auth-state.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LoginDialogComponent } from 'src/app/dialogs/login-dialog/login-dialog.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class BarNavComponent implements OnInit {
     private dialog: MatDialog,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
+    private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
       nombreUsuario: ['', [Validators.required, Validators.minLength(4)]],
@@ -123,7 +125,7 @@ export class BarNavComponent implements OnInit {
           timeOut: 3000,
           positionClass: 'toast-top-center'
         });
-        window.location.reload();
+        this.router.navigate(['/']);
       },
       error: (err) => {
         this.isLogged = false;
@@ -149,6 +151,6 @@ export class BarNavComponent implements OnInit {
     this.isLogged = false;
     this.isAdmin = false;
     this.authStateService.setAdminState(false);
-    window.location.reload();
+    this.router.navigate(['/']);
   }
 }

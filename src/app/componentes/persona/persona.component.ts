@@ -1,30 +1,36 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Persona } from 'src/app/models/persona';
 import { PersonaService } from 'src/app/servicios/persona.service';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
-declare var window: any;
+import { UrlValidatorService } from 'src/app/shared/url-validator.service';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog.component';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-persona',
     templateUrl: './persona.component.html',
     styleUrls: ['./persona.component.css'],
-    standalone: false
+    standalone: false,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PersonaComponent implements OnInit {
+export class PersonaComponent implements OnInit, OnDestroy {
   @ViewChild('personaDialog') personaDialog!: TemplateRef<any>;
   public personas: Persona[] = [];
   acercaDeForm: FormGroup;
   isAdmin: boolean = false;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private personaService: PersonaService,
     private formBuilder: FormBuilder,
     private toastr: ToastrService,
     private authStateService: AuthStateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private urlValidator: UrlValidatorService
   ) {
     this.acercaDeForm = this.formBuilder.group({
       id: [''],
@@ -32,12 +38,17 @@ export class PersonaComponent implements OnInit {
       apellido: ['', [Validators.required]],
       profesion: ['', [Validators.required]],
       acercaDe: ['', [Validators.required, Validators.maxLength(255)]],
-      urlImagen: ['', [Validators.required]],
-      urlImagenBanner: ['', [Validators.required]]
+      urlImagen: ['', [Validators.required, this.urlValidator.imageUrlValidator()]],
+      urlImagenBanner: ['', [Validators.required, this.urlValidator.imageUrlValidator()]]
     });
-    this.authStateService.isAdmin$.subscribe(
+    this.authStateService.isAdmin$.pipe(takeUntil(this.destroy$)).subscribe(
       isAdmin => this.isAdmin = isAdmin
     );
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   ngOnInit() {
@@ -129,18 +140,30 @@ export class PersonaComponent implements OnInit {
 
   public eliminarPersona(index: number) {
     let personas: Persona = this.personas[index];
-    if (confirm("¿Desea eliminar la persona seleccionada?")) {
-      this.personaService.eliminar(personas.id).subscribe({
-        next: () => {
-          this.toastr.error('Persona Eliminada', 'ATENCIÓN!', {
-            timeOut: 3000, positionClass: 'toast-top-center'
-          });
-          this.reloadData();
-        },
-        error: (error) => {
-          this.toastr.error('Error al eliminar', 'ERROR');
-        }
-      });
-    }
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: {
+        title: 'Confirmar Eliminación',
+        message: '¿Desea eliminar la persona seleccionada?',
+        confirmText: 'Eliminar',
+        cancelText: 'Cancelar'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.personaService.eliminar(personas.id).subscribe({
+          next: () => {
+            this.toastr.error('Persona Eliminada', 'ATENCIÓN!', {
+              timeOut: 3000, positionClass: 'toast-top-center'
+            });
+            this.reloadData();
+          },
+          error: (error) => {
+            this.toastr.error('Error al eliminar', 'ERROR');
+          }
+        });
+      }
+    });
   }
 }
