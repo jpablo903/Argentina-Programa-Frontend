@@ -47,19 +47,19 @@ export class BarNavComponent implements OnInit {
   private registerIcons() {
     this.iconRegistry.addSvgIcon(
       'facebook',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/facebook-brands.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl('../assets/facebook-brands.svg')
     );
     this.iconRegistry.addSvgIcon(
       'twitter',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/twitter-brands.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl('../assets/twitter-brands.svg')
     );
     this.iconRegistry.addSvgIcon(
       'github',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/git-alt-brands.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl('../assets/git-alt-brands.svg')
     );
     this.iconRegistry.addSvgIcon(
       'linkedin',
-      this.sanitizer.bypassSecurityTrustResourceUrl('assets/linkedin-brands.svg')
+      this.sanitizer.bypassSecurityTrustResourceUrl('../assets/linkedin-brands.svg')
     );
   }
 

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-footer',
@@ -25,28 +24,6 @@ export class FooterComponent {
     { label: 'Skills', target: 'skills' },
     { label: 'Proyectos', target: 'proyectos' }
   ];
-
-  constructor(
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer
-  ) {
-    this.registerIcons();
-  }
-
-  private registerIcons(): void {
-    const icons = [
-      { name: 'facebook', file: 'facebook-brands.svg' },
-      { name: 'twitter', file: 'twitter-brands.svg' },
-      { name: 'github', file: 'git-alt-brands.svg' },
-      { name: 'linkedin', file: 'linkedin-brands.svg' }
-    ];
-    icons.forEach(({ name, file }) => {
-      this.iconRegistry.addSvgIcon(
-        name,
-        this.sanitizer.bypassSecurityTrustResourceUrl(`assets/${file}`)
-      );
-    });
-  }
 
   scrollTo(target: string): void {
     const element = document.querySelector(`app-${target}`);
