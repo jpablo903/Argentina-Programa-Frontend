@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoginUsuario } from 'src/app/models/login-usuario';
 import { AuthService } from 'src/app/servicios/auth.service';
-import { JwtDTO } from 'src/app/models/jwt-dto';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -74,11 +73,13 @@ export class BarNavComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.authService.token) {
-      this.isLogged = true;
-      this.roles = this.authService.getAuthorities();
-      this.checkUserRole();
-    }
+    this.authService.me().subscribe(session => {
+      if (session) {
+        this.isLogged = true;
+        this.roles = session.authorities;
+        this.checkUserRole();
+      }
+    });
   }
 
   openLogin(): void {
@@ -94,15 +95,13 @@ export class BarNavComponent implements OnInit {
       if (result) {
         const loginUsuario = new LoginUsuario(result.nombreUsuario, result.password);
         this.authService.login(loginUsuario).subscribe({
-          next: (data: JwtDTO) => {
+          next: () => {
             this.isLogged = true;
-            this.authService.setToken(data.token);
-            this.authService.setAuthorities(data.authorities.map(auth => auth.authority));
             this.roles = this.authService.getAuthorities();
             this.checkUserRole();
             this.toastr.success('Bienvenido ' + result.nombreUsuario, 'OK');
           },
-          error: (err) => {
+          error: () => {
             this.isLogged = false;
             this.toastr.error('Usuario o contraseña incorrectos', 'Error');
           }
@@ -115,10 +114,8 @@ export class BarNavComponent implements OnInit {
   onLogin() {
     const loginUsuario = new LoginUsuario(this.nombreUsuario, this.password);
     this.authService.login(loginUsuario).subscribe({
-      next: (data: JwtDTO) => {
+      next: () => {
         this.isLogged = true;
-        this.authService.setToken(data.token);
-        this.authService.setAuthorities(data.authorities.map(auth => auth.authority));
         this.roles = this.authService.getAuthorities();
         this.checkUserRole();
         this.toastr.success('Bienvenido ' + this.nombreUsuario, 'OK', {
@@ -127,7 +124,7 @@ export class BarNavComponent implements OnInit {
         });
         this.router.navigate(['/']);
       },
-      error: (err) => {
+      error: () => {
         this.isLogged = false;
         this.toastr.error('Usuario o contraseña incorrectos', 'Error', {
           timeOut: 3000,
@@ -147,10 +144,21 @@ export class BarNavComponent implements OnInit {
   }
 
   onLogOut(): void {
-    this.authService.logout();
-    this.isLogged = false;
-    this.isAdmin = false;
-    this.authStateService.setAdminState(false);
-    this.router.navigate(['/']);
+    this.authService.logout().subscribe({
+      next: () => {
+        this.isLogged = false;
+        this.isAdmin = false;
+        this.roles = [];
+        this.authStateService.setAdminState(false);
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.isLogged = false;
+        this.isAdmin = false;
+        this.roles = [];
+        this.authStateService.setAdminState(false);
+        this.router.navigate(['/']);
+      }
+    });
   }
 }

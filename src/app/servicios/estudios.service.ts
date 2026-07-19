@@ -12,7 +12,7 @@ export class EstudiosService {
   estudiosUrl = `${environment.apiUrl}/estudios/`;
   
 
-  hpptOptions = {
+  httpOptions = {
     headers: new HttpHeaders({
       'Content-type': 'application/json'
     })
