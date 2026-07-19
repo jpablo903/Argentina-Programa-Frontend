@@ -56,11 +56,10 @@ export class PersonaComponent implements OnInit, OnDestroy {
   }
 
   private reloadData() {
-    this.personaService.lista().subscribe(
-      (data) => {
-        this.personas = data;
-      }
-    );
+    this.personaService.lista().subscribe({
+      next: (data) => this.personas = data,
+      error: (err) => console.error('Error loading persona:', err)
+    });
   }
 
   private borrarForm() {

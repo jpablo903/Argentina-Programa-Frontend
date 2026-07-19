@@ -4,11 +4,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoginUsuario } from 'src/app/models/login-usuario';
 import { AuthService } from 'src/app/servicios/auth.service';
+import { JwtDTO } from 'src/app/models/jwt-dto';
 import { AuthStateService } from 'src/app/shared/auth-state.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LoginDialogComponent } from 'src/app/dialogs/login-dialog/login-dialog.component';
-import { Router } from '@angular/router';
 
 
 @Component({
@@ -35,7 +35,6 @@ export class BarNavComponent implements OnInit {
     private dialog: MatDialog,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
-    private router: Router
   ) {
     this.loginForm = this.formBuilder.group({
       nombreUsuario: ['', [Validators.required, Validators.minLength(4)]],
@@ -63,7 +62,6 @@ export class BarNavComponent implements OnInit {
     );
   }
 
-  // Getters para las validaciones del formulario
   get nombreUsuarioValidoL() {
     return this.loginForm.get('nombreUsuario');
   }
@@ -73,13 +71,11 @@ export class BarNavComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.authService.me().subscribe(session => {
-      if (session) {
-        this.isLogged = true;
-        this.roles = session.authorities;
-        this.checkUserRole();
-      }
-    });
+    if (this.authService.token) {
+      this.isLogged = true;
+      this.roles = this.authService.getAuthorities();
+      this.checkUserRole();
+    }
   }
 
   openLogin(): void {
@@ -95,8 +91,10 @@ export class BarNavComponent implements OnInit {
       if (result) {
         const loginUsuario = new LoginUsuario(result.nombreUsuario, result.password);
         this.authService.login(loginUsuario).subscribe({
-          next: () => {
+          next: (data: JwtDTO) => {
             this.isLogged = true;
+            this.authService.setToken(data.token);
+            this.authService.setAuthorities(data.authorities.map(auth => auth.authority));
             this.roles = this.authService.getAuthorities();
             this.checkUserRole();
             this.toastr.success('Bienvenido ' + result.nombreUsuario, 'OK');
@@ -114,15 +112,17 @@ export class BarNavComponent implements OnInit {
   onLogin() {
     const loginUsuario = new LoginUsuario(this.nombreUsuario, this.password);
     this.authService.login(loginUsuario).subscribe({
-      next: () => {
+      next: (data: JwtDTO) => {
         this.isLogged = true;
+        this.authService.setToken(data.token);
+        this.authService.setAuthorities(data.authorities.map(auth => auth.authority));
         this.roles = this.authService.getAuthorities();
         this.checkUserRole();
         this.toastr.success('Bienvenido ' + this.nombreUsuario, 'OK', {
           timeOut: 3000,
           positionClass: 'toast-top-center'
         });
-        this.router.navigate(['/']);
+        window.location.reload();
       },
       error: () => {
         this.isLogged = false;
@@ -144,21 +144,10 @@ export class BarNavComponent implements OnInit {
   }
 
   onLogOut(): void {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.isLogged = false;
-        this.isAdmin = false;
-        this.roles = [];
-        this.authStateService.setAdminState(false);
-        this.router.navigate(['/']);
-      },
-      error: () => {
-        this.isLogged = false;
-        this.isAdmin = false;
-        this.roles = [];
-        this.authStateService.setAdminState(false);
-        this.router.navigate(['/']);
-      }
-    });
+    this.authService.logout();
+    this.isLogged = false;
+    this.isAdmin = false;
+    this.authStateService.setAdminState(false);
+    window.location.reload();
   }
 }

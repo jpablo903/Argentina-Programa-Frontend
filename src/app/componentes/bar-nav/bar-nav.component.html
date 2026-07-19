@@ -7,8 +7,26 @@
         <span class="program-text">#YoProgramo</span>
       </div>
 
-      <!-- Login/Logout -->
-      <div class="auth-buttons">
+      <!-- Actions -->
+      <div class="actions-section">
+        <!-- Social Links -->
+        <div class="social-links">
+          <a href="https://web.facebook.com/juanpa.r.904/" target="_blank" title="Facebook">
+            <mat-icon svgIcon="facebook"></mat-icon>
+          </a>
+          <a href="https://twitter.com/JuanPab57989868" target="_blank" title="Twitter">
+            <mat-icon svgIcon="twitter"></mat-icon>
+          </a>
+          <a href="https://github.com/jpablo903" target="_blank" title="GitHub">
+            <mat-icon svgIcon="github"></mat-icon>
+          </a>
+          <a href="https://www.linkedin.com/in/juan-pablo-rajoy-93406a11b/" target="_blank" title="LinkedIn">
+            <mat-icon svgIcon="linkedin"></mat-icon>
+          </a>
+        </div>
+
+        <!-- Login/Logout -->
+        <div class="auth-buttons">
         @if (!isLogged) {
         <button mat-raised-button color="primary" (click)="openLogin()">
           <mat-icon>login</mat-icon>
@@ -21,6 +39,7 @@
           Salir
         </button>
         }
+      </div>
       </div>
     </div>
   </div>
