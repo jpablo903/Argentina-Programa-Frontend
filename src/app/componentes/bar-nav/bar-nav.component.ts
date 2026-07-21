@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -15,6 +15,7 @@ import { LoginDialogComponent } from 'src/app/dialogs/login-dialog/login-dialog.
     selector: 'app-bar-nav',
     templateUrl: './bar-nav.component.html',
     styleUrls: ['./bar-nav.component.css'],
+    changeDetection: ChangeDetectionStrategy.Eager,
     standalone: false
 })
 export class BarNavComponent implements OnInit {
