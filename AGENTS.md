@@ -68,6 +68,6 @@ Se conecta a un backend Spring Boot via API REST:
 
 ## Notas para IA
 
-- Override de `esbuild >=0.28.1` en `pnpm.overrides` para vulnerabilidad
+- Overrides en `pnpm.overrides` para mitigar vulnerabilidades de paquetes transitivos: `esbuild >=0.28.1`, `undici >=8.9.0`, `fast-uri >=4.1.2`, `ip-address >=10.3.1`, `hono >=4.12.34`, `tar >=7.5.21`, `@babel/core >=7.29.6 <8`, `brace-expansion >=5.0.8`, `nanoid >=3.3.17 <4`, `postcss >=8.5.23`, `vite >=7.3.5 <8`
 - Dependencias gestionadas con pnpm (no npm ni yarn)
 - Node >=22.12.0 requerido
