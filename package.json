@@ -44,6 +44,7 @@
       "undici": ">=8.9.0",
       "express-rate-limit": ">=8.2.2",
       "fast-uri": ">=4.1.4",
+      "qs": ">=6.16.0",
       "ip-address": ">=10.3.1",
       "vite": ">=7.3.5 <8",
       "piscina": ">=5.2.0",
