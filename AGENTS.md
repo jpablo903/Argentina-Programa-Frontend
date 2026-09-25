@@ -83,7 +83,7 @@ Se conecta a un backend Spring Boot via API REST:
 ### Auditoría de dependencias
 
 - Ejecutar `pnpm audit` antes de cada release. Objetivo: 0 vulnerabilidades.
-- El workflow `.github/workflows/security.yml` corre en push/PR a `main` y semanalmente, con `pnpm audit --audit-level=moderate` y **sin** `continue-on-error`, por lo que vulnerabilidades moderadas o superiores rompen el pipeline.
+- El workflow `.github/workflows/security.yml` corre en push/PR a `master`/`main` y semanalmente, con `pnpm audit --audit-level=moderate` y **sin** `continue-on-error`, por lo que vulnerabilidades moderadas o superiores rompen el pipeline.
 - Renovate (`.renovate.json`) agrupa y auto-fusiona parches/minors de `@angular/*` y `ngx-toastr`.
 
 ## Notas para IA
