@@ -88,8 +88,9 @@ Se conecta a un backend Spring Boot via API REST:
 
 ## Notas para IA
 
-- Overrides en `pnpm.overrides` para mitigar vulnerabilidades de paquetes transitivos: `picomatch >=4.0.4`, `minimatch >=10.0.1`, `@modelcontextprotocol/sdk >=1.26.0`, `tar >=7.5.21`, `rollup >=4.59.0`, `@hono/node-server >=1.19.10`, `hono >=4.13.5`, `immutable >=5.1.5`, `undici >=8.9.0`, `express-rate-limit >=8.2.2`, `fast-uri >=4.1.4`, `qs >=6.16.0`, `ip-address >=10.3.1`, `vite >=7.3.5 <8`, `piscina >=5.2.0`, `esbuild >=0.28.1`, `@babel/core >=7.29.6 <8`, `brace-expansion >=5.0.8`, `nanoid >=3.3.17 <4`, `postcss >=8.5.23`
-- Versiones del framework Angular alineadas en `~21.2.24` y Material/CDK en `21.2.14`. Al actualizar, subir todo el conjunto `@angular/*` en bloque.
+- Overrides en `pnpm.overrides` para mitigar vulnerabilidades de paquetes transitivos: `picomatch >=4.0.4`, `minimatch >=11.0.1`, `@modelcontextprotocol/sdk >=1.31.0`, `tar >=7.5.21`, `rollup >=4.59.0`, `@hono/node-server >=2.1.3`, `hono >=4.13.11`, `immutable >=5.1.5`, `undici >=8.12.2 <9`, `express-rate-limit >=8.2.2`, `fast-uri >=4.2.3`, `qs >=6.16.1`, `ip-address >=10.7.4`, `vite >=7.3.7 <8`, `piscina >=5.3.2`, `esbuild >=0.28.1`, `@babel/core >=7.29.6 <8`, `brace-expansion >=5.0.12`, `nanoid >=3.3.17 <4`, `postcss >=8.5.23`, `proxy-addr >=2.0.8`, `source-map-js >=1.2.2`, `http-cache-semantics >=4.3.0`, `zod >=4.6.6`, `body-parser >=2.4.0`, `glob >=14.0.2`
+- Versiones del framework Angular alineadas en `~21.2.26` y Material/CDK en `21.2.14`. Al actualizar, subir todo el conjunto `@angular/*` en bloque.
+- Nota: `glob` y `minimatch` se fuerzan a sus majors parcheados (14 y 11) porque las ramas 13/10 no tienen fix para las CVEs de 2026. Tras tocar estos overrides, validar `pnpm build` y el funcionamiento de `@angular/cli` (pacote/cacache).
 - Dependencias gestionadas con pnpm (no npm ni yarn)
 - Node >=22.12.0 requerido
 - Al resolver CVEs, actualizar este archivo si cambian versiones u overrides.
